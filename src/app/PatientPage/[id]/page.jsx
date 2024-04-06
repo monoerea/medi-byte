@@ -1,5 +1,6 @@
 import PatientForm from '../../(components)/PatientForm'
 import React from 'react'
+import { FormDataProvider } from '../../(components)/FormDataContext';
 
 const PatientPage = ({params}) => {
   return (
@@ -7,9 +8,10 @@ const PatientPage = ({params}) => {
       <div>
         PatientPage {params.id}
       </div>
-      <div className="bg-white rounded-lg shadow-md p-4 max-w-3xl mx-auto max-h-full overflow-auto">
-        <PatientForm/>
-      </div>
+      <FormDataProvider> {/* Wrap your components with FormDataProvider */}
+        <PatientForm /> {/* Render your PatientForm component */}
+      </FormDataProvider>
+
       
     </div>
   )
