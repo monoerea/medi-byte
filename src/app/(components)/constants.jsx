@@ -45,4 +45,7 @@ export const prefixOptions = [ // Corrected variable name to prefixOptions
     fields:['id','prefix','firstName', 'lastName', 'middleInitial', 'gener','dateOfBirth','cellPhone','email','prevNames']},
  {  id: 'Step 7', 
     name:'Insurance Information',
-    fields:['id','prefix','firstName', 'lastName', 'middleInitial', 'gener','dateOfBirth','cellPhone','email','prevNames']}]
+    fields:['id','prefix','firstName', 'lastName', 'middleInitial', 'gener','dateOfBirth','cellPhone','email','prevNames']},
+{  id: 'Step 8', 
+   name:'Complete',
+   fields:['id','prefix','firstName', 'lastName', 'middleInitial', 'gener','dateOfBirth','cellPhone','email','prevNames']}]

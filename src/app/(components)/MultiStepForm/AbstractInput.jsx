@@ -21,6 +21,7 @@ const AbstractInput = ({ type, id, value, placeholder, validate, onChange }) => 
         <input
             type={type}
             id={id}
+            required
             value = {value}
             autoComplete={id}
             onChange={handleChange}
