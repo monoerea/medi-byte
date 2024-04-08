@@ -13,6 +13,8 @@ const PatientForm = () => {
     const { formData, handleFormDataChange } = useFormData();
     const [previousStep, setPreviousStep] = useState(0)
     const [currentStep, setCurrentStep] = useState(0)
+    const [error, setError] = useState('');
+    // const [isFormValid,setIsFormValid] = useState();
     const delta = currentStep - previousStep
 
     const onNext = (e) => {
@@ -26,12 +28,28 @@ const PatientForm = () => {
     const onPrevious = () => {
         setCurrentStep(currentStep - 1);
     };
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onNext(e)
-        console.log('Form data submitted:', formData);
+
+    // const validateForm = (formData) => {
+    //     // Check if all fields are filled and correctly formatted
+    //     const isValid = Object.values(formData).every(value => value !== '');
+       
+    //     return isValid;
+    // };
+    const handleSubmit = (event) => {
+        event.preventDefault();
         
+        // Perform validation
+        const isValid = Object.values(formData).every(value => value !== '');
+
+        if (isValid) {
+            setError('Not all fields have been filled.');
+            // Submit the formData
+            console.log('Form data submitted:', formData);
+        } else {
+            setError('');
+            console.log('Form validation failed. Please check your input.');
+        }
+        onNext(event);
     };
     return (
         <section className='absolute inset-0 flex flex-col max-w-screen-lg max-h-screen mt-20 bg-white rounded-2xl shadow-md px-24  py-3 mx-auto overflow-auto' >
@@ -43,6 +61,9 @@ const PatientForm = () => {
                 {currentStep == 1 && 
                 <AddressStep formData={formData} handleFormDataChange={handleFormDataChange}   />
                 } 
+                {error && (
+                <p className='mt-2 text-sm text-red-400'>{error}</p>
+                )}
 
                 {/* Navigation buttons */}
                 <div className="flex justify-between">

@@ -3,7 +3,7 @@ import React from 'react';
 import RadioButton from '../RadioButton';
 import AbstractInput from '../MultiStepForm/AbstractInput';
 import { prefixOptions } from '../constants';
-import { validateEmail } from '../utils';
+import { validateCellPhone, validateEmail, validateMiddleInitial, validateName } from '../utils';
 
 const PatientInfoStep = ({formData, handleFormDataChange}) => {
     return (
@@ -31,6 +31,7 @@ const PatientInfoStep = ({formData, handleFormDataChange}) => {
                     <AbstractInput
                         type='firstName'
                         id='firstName'
+                        validate={validateName}
                         value ={formData.firstName}
                         placeholder='Enter your name'
                         onChange={handleFormDataChange}
@@ -46,6 +47,7 @@ const PatientInfoStep = ({formData, handleFormDataChange}) => {
                     </label>
                     <AbstractInput
                         type='lastName'
+                        validate={validateName}
                         id='lastName'
                         value ={formData.lastName}
                         placeholder='Enter your name'
@@ -62,6 +64,7 @@ const PatientInfoStep = ({formData, handleFormDataChange}) => {
                     <AbstractInput
                         type='midInit'
                         id='midInit'
+                        validate={validateMiddleInitial}
                         value ={formData.midInit}
                         placeholder='Enter your name'
                         onChange={handleFormDataChange}
@@ -79,6 +82,7 @@ const PatientInfoStep = ({formData, handleFormDataChange}) => {
                     </label>
                     <select
                         id="gender"
+                        required
                         value ={formData.gender}
                         className=" w-full py-2.5 px-3 border border-gray-500 text-gray-700 leading-tight block rounded-md focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
                         onChange={(e)=>handleFormDataChange('gender',e.target.value)}
@@ -118,6 +122,7 @@ const PatientInfoStep = ({formData, handleFormDataChange}) => {
                         id='cellPhone'
                         value ={formData.cellPhone}
                         placeholder='123-456-789'
+                        validate={validateCellPhone}
                         pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
                         onChange={handleFormDataChange}
                     />
