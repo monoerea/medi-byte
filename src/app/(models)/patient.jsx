@@ -1,49 +1,39 @@
-import mongoose, {Schema} from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 mongoose.connect(process.env.MONGODB_URI);
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 
+// Define address schema
 const addressSchema = new Schema({
-    street: String,
-    city: String,
-    state: String,
-    country: String,
-    zip: String
+    street: { type: String, maxlength: 20 },
+    city: { type: String, maxlength: 20 },
+    state: { type: String, maxlength: 20 },
+    country: { type: String, maxlength: 20 },
+    zip: { type: String, maxlength: 20 }
 });
-const patientSchema = new Schema({
-        patientId: Number,
-        prefix: String,
-        name:  {first: String,
-                last: String,
-                middle: String},
-        dateOfBirth: Date,
-        gender: String,
-        cellPhone: Number,
-        prev_names: String,
-        email: String,
-        mailAddress: {
-            type: Schema.Types.ObjectId,
-            ref: 'Address'
-        }
-    },
-    {
-        virtuals:{
-            fullName:{
-                get(){
-                    return this.name.first + ' ' + this.name.middle + ' ' + this.name.last;
-                },
-                set(v) {
-                    const parts = v.split(' ');
-                    this.name.first = parts[0];
-                    this.name.middle = parts.slice(1, -1).join(' '); // Join middle names with spaces
-                    this.name.last = parts[parts.length - 1];
-                  }
-            }
-        }
-    }
-    );
 
+// Define patient schema
+const patientSchema = new Schema({
+    prefix: String,
+    firstName: { type: String, required: true, maxlength: 20 }, // Marked as required
+    lastName: { type: String, required: true, maxlength: 20 }, // Marked as required
+    middleInitial: { type: String, maxlength: 20 },
+    dateOfBirth: Date,
+    gender: { type: String, maxlength: 20 },
+    cellPhone: { type: String, maxlength: 20 },
+    prevNames: { type: String, maxlength: 20 },
+    email: { type: String, unique: true, maxlength: 20 },
+    mailAddress: {
+        type: Schema.Types.ObjectId,
+        ref: 'Address'
+    }
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
+
+// Define models
 const Address = mongoose.models.Address || mongoose.model('Address', addressSchema);
 const Patient = mongoose.models.Patient || mongoose.model('Patient', patientSchema);
 
-module.exports = { Address, Patient };
+export { Address, Patient };

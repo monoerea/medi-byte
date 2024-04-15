@@ -7,16 +7,18 @@ import PatientInfoStep from './MultiStepForm/PatientInfoStep';
 import AddressStep from './MultiStepForm/AddressStep';
 
 import {useFormData} from './FormDataContext';
-import {steps} from './constants'
+import {steps} from './constants';
 
-const PatientForm = () => {
+
+const PatientForm = (router) => {
+    
     const { formData, handleFormDataChange } = useFormData();
     const [previousStep, setPreviousStep] = useState(0)
     const [currentStep, setCurrentStep] = useState(0)
     const [error, setError] = useState('');
-    // const [isFormValid,setIsFormValid] = useState();
+    
     const delta = currentStep - previousStep
-
+    
     const onNext = (e) => {
         if (e) {
             e.preventDefault();
@@ -25,36 +27,71 @@ const PatientForm = () => {
         setCurrentStep(currentStep + 1);
     };
 
+    const connect = (e) =>{
+        const res = fetch('/api/Patient',{
+            method: POST,
+            body: JSON.stringify({formData}),
+            "content-type": "application/json"
+        })
+
+        if (!res.ok){
+            throw new Error('Failed to create Patient.')
+        }
+        router.refresh()
+        router.push("/")
+    }
+
     const onPrevious = () => {
         setCurrentStep(currentStep - 1);
     };
-
-    // const validateForm = (formData) => {
-    //     // Check if all fields are filled and correctly formatted
-    //     const isValid = Object.values(formData).every(value => value !== '');
-       
-    //     return isValid;
-    // };
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        
+    
         // Perform validation
         const isValid = Object.values(formData).every(value => value !== '');
-
-        if (isValid) {
+    
+        if (!isValid) {
             setError('Not all fields have been filled.');
-            // Submit the formData
-            console.log('Form data submitted:', formData);
+            console.log('Form validation failed. Please check your input.',formData);
         } else {
             setError('');
-            console.log('Form validation failed. Please check your input.');
+            console.log('Form data submitted:', formData);
+            
+            try {
+                await createPatient(formData);
+                router.refresh();
+                router.push("/");
+            } catch (error) {
+                console.error("Error creating patient:", error);
+                setError("Failed to create patient. Please try again.");
+            }
         }
+    
         onNext(event);
     };
+    
+    const createPatient = async (formData) => {
+        try {
+            const res = await fetch('/api/Patient', {
+                method: "POST",
+                body: JSON.stringify({ formData }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+    
+            if (!res.ok) {
+                throw new Error('Failed to create Patient.');
+            }
+        } catch (error) {
+            throw error;
+        }
+    };
+    
     return (
         <section className='absolute inset-0 flex flex-col max-w-screen-lg max-h-screen mt-20 bg-white rounded-2xl shadow-md px-24  py-3 mx-auto overflow-auto' >
             <ProgressTracker currentStep={currentStep} />
-            <form className="justify-around" onSubmit={handleSubmit}>
+            <form className="justify-around" onSubmit={handleSubmit} method='post'>
                 {currentStep == 0 && 
                 <PatientInfoStep formData={formData} handleFormDataChange={handleFormDataChange}   />
                 } 
@@ -62,7 +99,7 @@ const PatientForm = () => {
                 <AddressStep formData={formData} handleFormDataChange={handleFormDataChange}   />
                 } 
                 {error && (
-                <p className='mt-2 text-sm text-red-400'>{error}</p>
+                <p className='mt-2 text-sm text-red-400 text-center'>{error}</p>
                 )}
 
                 {/* Navigation buttons */}

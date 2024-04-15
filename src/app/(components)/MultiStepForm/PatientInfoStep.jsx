@@ -56,16 +56,16 @@ const PatientInfoStep = ({formData, handleFormDataChange}) => {
                 </div>
                 <div className="w-full md:w-1/10">
                     <label
-                        htmlFor='midInit'
+                        htmlFor='middleInitial'
                         className='block font-bold mb-2 leading-6 text-gray-500'
                     >
                         Middle Initial
                     </label>
                     <AbstractInput
-                        type='midInit'
-                        id='midInit'
+                        type='text'
+                        id='middleInitial'
                         validate={validateMiddleInitial}
-                        value ={formData.midInit}
+                        value ={formData.middleInitial}
                         placeholder='Enter your name'
                         onChange={handleFormDataChange}
                     />

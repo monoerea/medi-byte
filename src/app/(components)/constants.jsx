@@ -1,21 +1,20 @@
 export const initData = {
-    patientId: '01',
-    prefix: '',
-    firstName: '', 
-    lastName: '', 
-    middleName: '',
-    dateOfBirth: '',
-    gender: '',
-    cellPhone: '',
-    prevNames: '',
-    email: '',
-    mailAddress: {
-        street: 'Kawit',
-        city: 'Gloria',
-        state: 'Oriental Mindoro',
-        country: 'Philippines',
-        zip: '5209'
-    }
+   prefix: "Ms.",
+   firstName: "Sheen",
+   lastName: "Senroin",
+   middleInitial: "S.",
+   dateOfBirth: "0005-04-02",
+   gender: "female",
+   cellPhone: "12345678900",
+   prevNames: "Sheen",
+   email: "s@g.co",
+   mailAddress: {
+       street: 'Kawit',
+       city: 'Gloria',
+       state: 'Oriental Mindoro',
+       country: 'Philippines',
+       zip: '5209'
+   }
 };
 
 export const prefixOptions = [ // Corrected variable name to prefixOptions

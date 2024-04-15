@@ -1,20 +1,22 @@
-import PatientForm from '../../(components)/PatientForm'
-import React from 'react'
+'use client'
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import PatientForm from '../../(components)/PatientForm';
 import { FormDataProvider } from '../../(components)/FormDataContext';
 
-const PatientPage = ({params}) => {
+const PatientPage = ({ params }) => {
+  const router = useRouter();
+
   return (
     <div>
       <div>
         PatientPage {params.id}
       </div>
-      <FormDataProvider> {/* Wrap your components with FormDataProvider */}
-        <PatientForm /> {/* Render your PatientForm component */}
+      <FormDataProvider>
+        <PatientForm router={router} />
       </FormDataProvider>
-
-      
     </div>
-  )
-}
+  );
+};
 
-export default PatientPage
+export default PatientPage;
