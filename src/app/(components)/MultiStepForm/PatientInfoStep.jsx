@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import RadioButton from '../RadioButton';
-import AbstractInput from '../MultiStepForm/AbstractInput';
+import AbstractInput from '../ui/AbstractInput';
 import { prefixOptions } from '../constants';
 import { validateCellPhone, validateEmail, validateMiddleInitial, validateName } from '../utils';
 

@@ -1,8 +1,8 @@
 import DataTable from './DataTable/DataTable';
 import React, { useEffect, useState } from "react";
-import { getPatients } from "../utils";
-import Pagination from "./Pagination";
-import SearchBar from "./SearchBar";
+import { getPatients } from "./utils";
+import Pagination from "./ui/Pagination";
+import SearchBar from "./ui/SearchBar";
 
 const PatientControlPage = () => {
     const [patients, setPatients] = useState([]);

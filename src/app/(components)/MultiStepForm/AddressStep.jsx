@@ -1,5 +1,5 @@
 import React from 'react';
-import AbstractInput from './AbstractInput';
+import AbstractInput from '../ui/AbstractInput';
 
 const AddressStep = ({formData, handleFormDataChange}) => {
     return (

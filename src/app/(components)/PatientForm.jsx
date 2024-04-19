@@ -6,8 +6,8 @@ import ProgressTracker from './MultiStepForm/ProgressTracker';
 import PatientInfoStep from './MultiStepForm/PatientInfoStep';
 import AddressStep from './MultiStepForm/AddressStep';
 
-import {useFormData} from './FormDataContext';
-import {steps} from '../constants';
+import {useFormData} from './ui/FormDataContext';
+import {steps} from './constants';
 
 
 const PatientForm = (router) => {
