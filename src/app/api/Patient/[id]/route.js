@@ -1,62 +1,68 @@
-import { get } from 'http';
-import {Patient} from '../../../(models)/Patient';
-import { NextResponse } from 'next/server';
-import { error } from 'console';
+import { query } from "@/lib/db";
 
-export async function GET(req, { params }) {
-  const { id } = params;
-
-  const foundPatient = await Patient.findOne({ _id: id });
-  return NextResponse.json({ foundPatient }, { status: 200 });
-}
-
-
-export async function PUT(req, { params })  {
-    try {
-        console.log('Updating patient');
-        const { id } = params;
-        const body = await req.json(); // Extracting the entire request body
-
-        // Check if the request body contains the necessary data
-        if (!body) {
-            return NextResponse.json({ message: "Request body is empty" }, { status: 400 });
-        }
-
-        // Find the patient by ID
-        const patient = await Patient.findById(id);
-
-        // Check if the patient exists
-        if (!patient) {
-            return NextResponse.json({ message: "Patient not found" }, { status: 404 });
-        }
-
-        // Update the patient fields with the provided data
-        const updatedPatient = await Patient.findByIdAndUpdate(id, body, { new: true });
-        console.log('Updated patient',updatedPatient);
-
-        // Respond with the updated patient
-        return NextResponse.json({ patient: updatedPatient }, { status: 200 });
-    } catch (error) {
-        // If an error occurs during patient update, respond with an error message
-        console.error("Error updating patient:", error);
-        return NextResponse.json({ message: "Error updating patient", error }, { status: 500 });
-    }
-}
-
-
-export async function DELETE(req, { params }) {
-    try {
-      const { id } = params;
-      
-      const patient = await Patient.findById(id);
-
-      if (!patient) {
-        return NextResponse.json({ message: "Patient not found" }, { status: 404 });
-    }
-      await Person.findByIdAndDelete(id);
-      return NextResponse.json({ message: "Ticket Deleted" }, { status: 200 });
-    } catch (error) {
-      console.log(error);
-      return NextResponse.json({ message: "Error", error }, { status: 500 });
-    }
+export default async function handler(req, res) {
+  let message;
+  if (req.method === "GET") {
+    const products = await query({
+      query: "SELECT * FROM products",
+      values: [],
+    });
+    res.status(200).json({ products: products });
   }
+
+  if (req.method === "POST") {
+    const productName = req.body.product_name;
+    const addProducts = await query({
+      query: "INSERT INTO products (product_name) VALUES (?)",
+      values: [productName],
+    });
+    let product = [];
+    if (addProducts.insertId) {
+      message = "success";
+    } else {
+      message = "error";
+    }
+    product = {
+      product_id: addProducts.insertId,
+      product_name: productName,
+    };
+    res.status(200).json({ response: { message: message, product: product } });
+  }
+
+  if (req.method === "PUT") {
+    const productId = req.body.product_id;
+    const productName = req.body.product_name;
+    const updateProducts = await query({
+      query: "UPDATE products SET product_name = ? WHERE product_id = ?",
+      values: [productName, productId],
+    });
+    const result = updateProducts.affectedRows;
+    if (result) {
+      message = "success";
+    } else {
+      message = "error";
+    }
+    const product = {
+      product_id: productId,
+      product_name: productName,
+    };
+    res.status(200).json({ response: { message: message, product: product } });
+  }
+
+  if (req.method === "DELETE") {
+    const productId = req.body.product_id;
+    const deleteProducts = await query({
+      query: "DELETE FROM products WHERE product_id = ?",
+      values: [productId],
+    });
+    const result = deleteProducts.affectedRows;
+    if (result) {
+      message = "success";
+    } else {
+      message = "error";
+    }
+    res
+      .status(200)
+      .json({ response: { message: message, product_id: productId } });
+  }
+}

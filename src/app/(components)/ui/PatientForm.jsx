@@ -7,7 +7,7 @@ import PatientInfoStep from './MultiStepForm/PatientInfoStep';
 import AddressStep from './MultiStepForm/AddressStep';
 
 import {useFormData} from './FormDataContext';
-import {steps} from './constants';
+import {steps} from '../constants';
 
 
 const PatientForm = (router) => {

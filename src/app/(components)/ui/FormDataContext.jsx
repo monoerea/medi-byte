@@ -1,7 +1,7 @@
 // FormDataContext.js
 'use client'
 import React, { createContext, useContext, useState } from 'react';
-import { initData } from './constants';
+import { initData } from '../constants';
 
 const FormDataContext = createContext();
 

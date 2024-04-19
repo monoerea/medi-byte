@@ -1,8 +1,8 @@
 'use client'
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import PatientForm from '../../(components)/PatientForm';
-import { FormDataProvider } from '../../(components)/FormDataContext';
+import PatientForm from '../../(components)/ui/PatientForm';
+import { FormDataProvider } from '../../(components)/ui/FormDataContext';
 
 const PatientPage = ({ params }) => {
   const router = useRouter();

@@ -1,6 +1,6 @@
-import DataTable from './DataTable';
+import DataTable from './DataTable/DataTable';
 import React, { useEffect, useState } from "react";
-import { getPatients } from "./utils";
+import { getPatients } from "../utils";
 import Pagination from "./Pagination";
 import SearchBar from "./SearchBar";
 

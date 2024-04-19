@@ -1,5 +1,5 @@
 'use client'
-import PatientControlPage from './(components)/PatientControlPage';
+import PatientControlPage from './(components)/ui/PatientControlPage';
 
 const Dashboard = () => {
   return (
