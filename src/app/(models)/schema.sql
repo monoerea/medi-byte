@@ -1,4 +1,5 @@
 
+Drop table Patient,EmergencyContact, Insurance, PatientInsurance;
 
 CREATE TABLE IF NOT EXISTS EmergencyContact (
     EmergencyContactID VARCHAR(20) PRIMARY KEY,
@@ -8,13 +9,12 @@ CREATE TABLE IF NOT EXISTS EmergencyContact (
     EmergencyWorkPhone VARCHAR(10),
     DateOfBirth DATE
 );
-
 CREATE TABLE IF NOT EXISTS Patient (
     PatientID VARCHAR(20) PRIMARY KEY,
     Prefix VARCHAR(4),
     PatientName VARCHAR(50),
     PreviousNames VARCHAR(50),
-    EmailAddress VARCHAR(100) CHECK (EmailAddress REGEXP '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'),
+    EmailAddress VARCHAR(100),
     MailingAddress VARCHAR(255) NOT NULL,
     MaritalStatus VARCHAR(20) CHECK (MaritalStatus IN ('Single', 'Married', 'Partner', 'Divorced', 'Widowed', 'Legally Separated')),
     HomeAddress VARCHAR(255) NOT NULL,
@@ -23,9 +23,9 @@ CREATE TABLE IF NOT EXISTS Patient (
     DateOfBirth DATE,
     Gender VARCHAR(15) CHECK (Gender IN ('Male', 'Female', 'Transgender')),
     SSN VARCHAR(20) UNIQUE NOT NULL,
-    HomePhone VARCHAR(10),
-    CellPhone VARCHAR(11) CHECK (CellPhone REGEXP '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$'),
-    WorkPhone VARCHAR(10),
+    HomePhone INT(10),
+    CellPhone INT(11),
+    WorkPhone INT(10),
     PreferredContact VARCHAR(4) CHECK (PreferredContact IN ('Home', 'Cell', 'Work')),
     StudentStatus VARCHAR(14) CHECK (StudentStatus IN ('Full-time', 'Part-time', 'Not-a-Student')),
     EmployerName VARCHAR(50),
@@ -34,8 +34,7 @@ CREATE TABLE IF NOT EXISTS Patient (
     EmploymentStatus VARCHAR(20) CHECK (EmploymentStatus IN ('Full-time', 'Part-time', 'Not employed', 'Self-employed', 'Retired', 'Active-Military-Duty')),
     EmergencyContactID VARCHAR(20),
     FOREIGN KEY (EmergencyContactID) REFERENCES EmergencyContact(EmergencyContactID)
-);
-
+    );
 CREATE TABLE IF NOT EXISTS Insurance (
     InsuranceID VARCHAR(20) PRIMARY KEY,
     InsuranceCompanyName VARCHAR(100),

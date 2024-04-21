@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DataTableHeader from './DataTableHeader';
-import { updatePatient } from "../../utils";
+import { updatePatient } from "../utils";
 
 const DataTable = ({ patients, onDelete }) => {
   const [filteredPatients, setFilteredPatients] = useState(patients);

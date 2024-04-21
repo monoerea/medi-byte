@@ -1,61 +1,66 @@
-import { get } from 'http';
-import {Patient} from '../../(models)/Patient';
-import {Address} from '../../(models)/Patient'; // Import Address model if needed
+// pages/api/patients.js
+
 import { NextResponse } from 'next/server';
-import { error } from 'console';
+import { createPatient, getPatient, updatePatient, deletePatient } from './controller';
 
 export async function POST(req) {
-    try {
-        // Parse the request body
-        const { formData } = await req.json();
+  try {
+    const formData = await req.json();
+    
+    // Convert formData object into an array of patient objects
+    const formDataArray = Object.values(formData);
 
-        // Extract firstName, lastName, and middleInitial from formData
-        const { mailAddress, ...rest } = formData;
+    // Iterate over each patient object
+    const responses = await Promise.all(formDataArray.map(async (data) => {
+      // Extract values from each patient object up to EmploymentStatus
+      const relevantValues = Object.values(data).slice(0, 22);
+      const keys = Object.keys(data).slice(0, 22).join(', ');
+      console.log('relevantValues:', relevantValues, 'keys:', keys);
 
-        // Create a new address based on the formData
-        const newAddress = new Address(mailAddress);
+      // Create a patient for each formData entry
+      return createPatient(relevantValues, keys);
+    }));
 
-        // Save the address to the database
-        const savedAddress = await newAddress.save();
-
-        // Create the patient using the extracted fields and additional data from formData
-        const newPatient = await Patient.create({
-            mailAddress: savedAddress, // Pass the saved address object
-            ...rest // Include any additional fields in formData
-        });
-
-        console.log('Saved Patient:', newPatient);
-        // Respond with a success message
-        return NextResponse.json({ message: "Patient Created", patient: newPatient }, { status: 201 });
-    } catch (error) {
-        // If an error occurs during patient creation, respond with an error message
-        console.error("Error creating patient:", error);
-        return NextResponse.json({ message: "Error creating patient", error }, { status: 500 });
-    }
+    // Return an array of responses
+    return NextResponse.json(responses, { status: 201 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
 
 
 
 export async function GET(req) {
-    try {
-        console.log("Fetching patients...");
-        // Retrieve patients from the database
-        const patients = await Patient.find();
-        
-        console.log("Patients fetched successfully:", patients);
-
-        // Check if patients are retrieved successfully
-        if (!patients) {
-            // If no patients found, return an appropriate message
-            return NextResponse.json({ message: 'No patients found' }, { status: 404 });
-        }
-
-        // If patients are found, return them in the response
-        return NextResponse.json({ patients }, { status: 200 });
-    } catch (error) {
-        // If an error occurs during retrieval, handle it and return an error response
-        console.error('Error fetching patients:', error);
-        return NextResponse.json({ message: 'Error fetching patients', error }, { status: 500 });
+  try {
+    const patient = await getPatient(req.query.id);
+    if (!patient) {
+      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+    } else {
+      return NextResponse.json(patient, { status: 200 });
     }
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
 
+export async function PUT(req) {
+  try {
+    const updatedPatient = await updatePatient(req.query.id, req.body);
+    return NextResponse.json(updatedPatient, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(req) {
+  try {
+    await deletePatient(req.query.id);
+    return NextResponse.json({}, { status: 204 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}

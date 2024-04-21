@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import ProgressTracker from './MultiStepForm/ProgressTracker';
 import PatientInfoStep from './MultiStepForm/PatientInfoStep';
-import AddressStep from './MultiStepForm/AddressStep';
+import DynamicForm from './MultiStepForm/DynamicForm';
 
 import {useFormData} from './ui/FormDataContext';
 import {steps} from './constants';
@@ -44,6 +44,7 @@ const PatientForm = (router) => {
     const onPrevious = () => {
         setCurrentStep(currentStep - 1);
     };
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
     
@@ -92,12 +93,18 @@ const PatientForm = (router) => {
         <section className='absolute inset-0 flex flex-col max-w-screen-lg max-h-screen mt-20 bg-white rounded-2xl shadow-md px-24  py-3 mx-auto overflow-auto' >
             <ProgressTracker currentStep={currentStep} />
             <form className="justify-around" onSubmit={handleSubmit} method='post'>
-                {currentStep == 0 && 
+                {currentStep == 1 && 
                 <PatientInfoStep formData={formData} handleFormDataChange={handleFormDataChange}   />
                 } 
-                {currentStep == 1 && 
-                <AddressStep formData={formData} handleFormDataChange={handleFormDataChange}   />
+                {currentStep == 0 && 
+                <DynamicForm fields={ steps[0]} formData={formData} handleFormDataChange={handleFormDataChange}   />
                 } 
+                {/* {currentStep == 1 && 
+                <AddressStep fields={ steps[1]} formData={formData} handleFormDataChange={handleFormDataChange}   />
+                } 
+                {currentStep == 2 && 
+                <AddressStep fields={ steps[2]} formData={formData} handleFormDataChange={handleFormDataChange}   />
+                }  */}
                 {error && (
                 <p className='mt-2 text-sm text-red-400 text-center'>{error}</p>
                 )}
