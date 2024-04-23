@@ -1,5 +1,7 @@
+import { validateCellPhone, validateEmail, validateName } from './utils';
+
 export const initData = {
-      PatientID: Math.floor(Math.random() * 1000000),
+      PatientID: Math.floor(Math.random() * 10000),
       Prefix: "Ms.",
       PatientName: "Senorin, Sheen S.",
       PreviousNames: "Alice March",
@@ -7,7 +9,7 @@ export const initData = {
       MailingAddress:"5209 Kawit, Gloria, Oriental Mindoro",
       MaritalStatus:'Single',
       Gender: "Female",
-      CellPhone: "1",//(63)091-123-4567
+      CellPhone: "911234567",//
       HomeAddress:"5209 Kawit, Gloria, Oriental Mindoro",
       ResidenceType:"Private Home",
       PrimaryCarePhysician:"Dr. Kim Taehyung",
@@ -21,13 +23,13 @@ export const initData = {
       EmployerAddress:'Korea',
       EmployerPhone:'1234123',
       EmploymentStatus:'Retired',
- 
       EmergencyName: "Jocelyn S. Senorin",
       RelationshipToPatient: "Mother",
       EmergencyCellphone:'12345678900',
-      EmergencyWorkphone:'09876543211',
+      EmergencyWorkphone:'9876543211',
       EmergencyDateOfBirth: new Date('03-24-1973'),
-  
+
+      InsuranceID: Math.floor(Math.random() * 10000),
       InsuranceCompanyName:'HYBE Insurances',
       SubscriberNo:'10000',
       GroupNo:'20000',
@@ -56,42 +58,36 @@ export const prefixOptions = [ // Corrected variable name to prefixOptions
         id: 'Step 1',
         name: 'Patient Information',
         fields: [
-          { name: 'Prefix', group: 1, type:'radio',options:prefixOptions },
-          { name: 'PatientName', group: 2 },
-          { name: 'PrevNames', group: 3 },
-          { name: 'EmailAddress', group: 4 },
-          { name: 'MailingAddress', group: 4 },
-          { name: 'MaritalStatus', group: 5 },
-          { name: 'Gender', group: 5 },
-          { name: 'CellPhone', group: 5 },
-          { name: 'HomeAddress', group: 6 },
-          { name: 'ResidenceType', group: 6 },
-          { name: 'PrimaryCarePhysician', group: 7 },
-          { name: 'DateOfBirth', group: 8 },
-          { name: 'SSN', group: 8 },
-          { name: 'HomePhone', group: 9 },
-          { name: 'WorkPhone', group: 9 },
-          { name: 'PreferredContact', group: 9 },
-          { name: 'StudentStatus', group: 9 },
-          { name: 'EmployerName', group: 10 },
-          { name: 'EmployerAddress', group: 11 },
-          { name: 'EmployerPhone', group: 12 },
-          { name: 'EmploymentStatus', group: 12 }
+          { name: 'Prefix', group: 1, section: 'Patient Information', type: 'radio', options: prefixOptions },
+          { name: 'PatientName', group: 2, section: 'Patient Information' },
+          { name: 'PreviousNames', group: 3, section: 'Patient Information' },
+          { name: 'EmailAddress', group: 4, section: 'Patient Information', validate: validateEmail },
+          { name: 'MailingAddress', group: 4, section: 'Patient Information' },
+          { name: 'MaritalStatus', group: 5, section: 'Patient Information' },
+          { name: 'Gender', group: 5, section: 'Patient Information' },
+          { name: 'CellPhone', group: 5, section: 'Patient Information', validate: validateCellPhone },
+          { name: 'HomeAddress', group: 6, section: 'Patient Information' },
+          { name: 'ResidenceType', group: 6, section: 'Patient Information' },
+          { name: 'PrimaryCarePhysician', group: 7, section: 'Patient Information' },
+          { name: 'DateOfBirth', group: 8, section: 'Patient Information' },
+          { name: 'SSN', group: 8, section: 'Patient Information' },
+          { name: 'HomePhone', group: 9, section: 'Patient Information', validate: validateCellPhone },
+          { name: 'WorkPhone', group: 9, section: 'Patient Information', validate: validateCellPhone },
+          { name: 'PreferredContact', group: 9, section: 'Patient Information' },
+          { name: 'StudentStatus', group: 10, section: 'Patient Information' },
+          { name: 'EmployerName', group: 11, section: 'Employer Information' },
+          { name: 'EmployerAddress', group: 12, section: 'Employer Information' },
+          { name: 'EmployerPhone', group: 13, section: 'Employer Information' },
+          { name: 'EmploymentStatus', group: 13, section: 'Employer Information' },
+          { name: 'EmergencyName', group: 14, section: 'Emergency Information' },
+          { name: 'RelationshipToPatient', group: 15, section: 'Emergency Information' },
+          { name: 'EmergencyCellphone', group: 15, section: 'Emergency Information' },
+          { name: 'EmergencyWorkphone', group: 15, section: 'Emergency Information' },
+          { name: 'EmergencyDateOfBirth', group: 16, section: 'Emergency Information' },
         ]
       },
       {
         id: 'Step 2',
-        name: 'Emergency Contact',
-        fields: [
-          { name: 'EmergencyName', group: 1 },
-          { name: 'RelationshipToPatient', group: 1 },
-          { name: 'EmergencyCellphone', group: 2 },
-          { name: 'EmergencyWorkphone', group: 2 },
-          { name: 'EmergencyDateOfBirth', group: 3 }
-        ]
-      },
-      {
-        id: 'Step 3',
         name: 'Insurance',
         fields: [
           { name: 'InsuranceCompanyName', group: 1 },
@@ -110,8 +106,7 @@ export const prefixOptions = [ // Corrected variable name to prefixOptions
         ]
       },
       {
-         id: 'Step 4',
-         name: 'Complete',
-       }
+        id: 'Step 3',
+        name: 'Complete',
+      }
     ];
-    

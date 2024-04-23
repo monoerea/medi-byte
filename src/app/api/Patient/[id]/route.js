@@ -1,74 +1,50 @@
-import {query} from '../../lib/db';
+import { getItem, updateItem, deleteItem } from '../../controller';
 import { NextResponse } from 'next/server';
 
-
-export default async function GET(req, res){
-    if (req.method === "GET") {
-      const patients = await query({
-        query: "SELECT * FROM patient",
-        values: [],
-      });
-      res.status(200).json({ patients: patients });
+const table = 'patient'
+export async function GET(req) {
+  try {
+    const patient = await getItem(req.query.id, table);
+    if (!patient) {
+      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+    } else {
+      return NextResponse.json(patient, { status: 200 });
     }
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
+}
 
-// export default async function handler(req, res) {
-//   let message;
- 
+export async function PUT(req) {
+  try {
+    // Parse the request body
+    const formData = await req.json();
+    console.log('formData', formData);
 
-//   if (req.method === "POST") {
-//     const productName = req.body.product_name;
-//     const addProducts = await query({
-//       query: "INSERT INTO products (product_name) VALUES (?)",
-//       values: [productName],
-//     });
-//     let product = [];
-//     if (addProducts.insertId) {
-//       message = "success";
-//     } else {
-//       message = "error";
-//     }
-//     product = {
-//       product_id: addProducts.insertId,
-//       product_name: productName,
-//     };
-//     res.status(200).json({ response: { message: message, product: product } });
-//   }
+    const {id, body} = formData;
+    // Assuming formData contains the updated data
 
-//   if (req.method === "PUT") {
-//     const productId = req.body.product_id;
-//     const productName = req.body.product_name;
-//     const updateProducts = await query({
-//       query: "UPDATE products SET product_name = ? WHERE product_id = ?",
-//       values: [productName, productId],
-//     });
-//     const result = updateProducts.affectedRows;
-//     if (result) {
-//       message = "success";
-//     } else {
-//       message = "error";
-//     }
-//     const product = {
-//       product_id: productId,
-//       product_name: productName,
-//     };
-//     res.status(200).json({ response: { message: message, product: product } });
-//   }
+    // Update the patient with the provided id
+    const updatedPatient = await updateItem(id, body, table);
 
-//   if (req.method === "DELETE") {
-//     const productId = req.body.product_id;
-//     const deleteProducts = await query({
-//       query: "DELETE FROM products WHERE product_id = ?",
-//       values: [productId],
-//     });
-//     const result = deleteProducts.affectedRows;
-//     if (result) {
-//       message = "success";
-//     } else {
-//       message = "error";
-//     }
-//     res
-//       .status(200)
-//       .json({ response: { message: message, product_id: productId } });
-//   }
-// }
+    // Return the updated patient
+    return NextResponse.json(updatedPatient, { status: 201 });
+  } catch (error) {
+    console.error(error);
+    // Return an error response if something goes wrong
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(req) {
+  try {
+    const {id} = await req.json();
+    console.log(id);
+    await deleteItem(id, table);
+    return NextResponse.json({ status: 204 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}

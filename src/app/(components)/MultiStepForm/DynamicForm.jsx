@@ -1,9 +1,9 @@
 import React from 'react';
 import RadioButton from '../ui/RadioButton';
 import AbstractInput from '../ui/AbstractInput';
-import { validateCellPhone, validateEmail, validateName } from '../utils';
 
 const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
+    
     // Get unique group numbers
     const groupNumbers = [...new Set(fields.fields.map(field => field.group))];
 
@@ -21,12 +21,18 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
         // Filter fields based on the group number
         const fieldsInGroup = fields.fields.filter(field => field.group === groupNumber);
         const numberOfFieldsInGroup = fieldsInGroup.length;
+        
+        // Set a maximum number of columns
+        const maxColumns = 3; // Adjust this value based on your layout requirements
+        
         // Determine the number of columns based on the number of fields in the group
-        const columns = numberOfFieldsInGroup > 1 ? `md:grid-cols-${numberOfFieldsInGroup}` : 'xs:grid-cols-1';
+        const columns = Math.min(numberOfFieldsInGroup, maxColumns);
     
         // Render each field in the group
         return fieldsInGroup.map((field, index) => (
-            <div className={`mb-4 ${columns} md:gap-4`} key={index}>
+            
+            <div className={`mb-4 md:w-${columns} md:gap-4`} key={index}>
+                
                 <label className="block text-gray-700 font-bold mb-2" htmlFor={field.name}>{field.name}</label>
                 {field.type === 'radio' ? (
                     <RadioButton
@@ -44,7 +50,6 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
                         validate={field.validate}
                         onChange={handleFormDataChange}
                     />
-
                 )}
             </div>
         ));
@@ -52,7 +57,7 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
     
 
     return (
-        <div className='grid sm:grid-cols-1'>
+        <div className='grid grid-cols-1'>
             <h2 className="text-xl text-center font-semibold text-black">{fields.name}</h2>
             {/* Render fields for each group */}
             {groupNumbers.map((groupNumber, index) => (

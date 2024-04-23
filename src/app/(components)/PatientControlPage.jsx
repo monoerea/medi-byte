@@ -14,9 +14,8 @@ const PatientControlPage = () => {
       const fetchPatients = async () => {
         try {
           const patientsData = await getPatients();
-          const patientsArray = patientsData ? Object.values(patientsData)[0] : [];
-          setPatients(patientsArray);
-          setTotalPages(Math.ceil(patientsArray.length / 10)); // Assuming 10 patients per page
+          setPatients(patientsData);
+          setTotalPages(Math.ceil(patientsData.length / 10)); // Assuming 10 patients per page
         } catch (error) {
           console.error("Error fetching patients:", error);
         }

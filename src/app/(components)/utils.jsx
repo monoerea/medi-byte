@@ -28,13 +28,18 @@ export const getPatients = async () => {
 
 }
 export async function updatePatient(id, data) {
+  console.log('id',id, data)
+  const reqBody ={
+    id:id,
+    body:data
+  }
   try {
       const response = await fetch(`/api/Patient/${id}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(reqBody)
       });
 
       if (!response.ok) {
@@ -47,4 +52,26 @@ export async function updatePatient(id, data) {
       throw new Error('Failed to update patient');
   }
 }
+
+export async function deletePatient(id) {
+  try {
+    const response = await fetch(`/api/Patient/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete patient');
+    }
+    
+    return response.status;
+  } catch (error) {
+    console.error('Error deleting patient:', error);
+    throw new Error('Failed to delete patient');
+  }
+}
+
 

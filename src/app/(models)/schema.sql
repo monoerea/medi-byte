@@ -1,24 +1,16 @@
 
-Drop table Patient,EmergencyContact, Insurance, PatientInsurance;
+Drop table Patient, Insurance, PatientInsurance;
 
-CREATE TABLE IF NOT EXISTS EmergencyContact (
-    EmergencyContactID VARCHAR(20) PRIMARY KEY,
-    EmergencyName VARCHAR(50),
-    RelationshipToPatient VARCHAR(50),
-    EmergencyCellPhone VARCHAR(11) CHECK (EmergencyCellPhone REGEXP '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$'),
-    EmergencyWorkPhone VARCHAR(10),
-    DateOfBirth DATE
-);
 CREATE TABLE IF NOT EXISTS Patient (
     PatientID VARCHAR(20) PRIMARY KEY,
     Prefix VARCHAR(4),
     PatientName VARCHAR(50),
     PreviousNames VARCHAR(50),
-    EmailAddress VARCHAR(100),
+    EmailAddress VARCHAR(100) CHECK (EmailAddress REGEXP "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@([a-z0-9]+[a-z0-9-]*)*[a-z0-9]+(\.([a-z0-9]+[a-z0-9-]*)*[a-z0-9]+)*\.[a-z]{2,6}$"),
     MailingAddress VARCHAR(255) NOT NULL,
     MaritalStatus VARCHAR(20) CHECK (MaritalStatus IN ('Single', 'Married', 'Partner', 'Divorced', 'Widowed', 'Legally Separated')),
     HomeAddress VARCHAR(255) NOT NULL,
-    ResidenceType VARCHAR(35) CHECK (ResidenceType IN ('Skilled Nursing Home', 'Nursing Home', 'Residential Home (Assisted Living)', 'Private Home')),
+    ResidenceType VARCHAR(35) CHECK (ResidenceType IN ('Skilled Nursing Home', 'Nursing Home', 'Residential Home', 'Private Home')),
     PrimaryCarePhysician VARCHAR(50),
     DateOfBirth DATE,
     Gender VARCHAR(15) CHECK (Gender IN ('Male', 'Female', 'Transgender')),
@@ -32,8 +24,11 @@ CREATE TABLE IF NOT EXISTS Patient (
     EmployerAddress VARCHAR(255),
     EmployerPhone VARCHAR(11),
     EmploymentStatus VARCHAR(20) CHECK (EmploymentStatus IN ('Full-time', 'Part-time', 'Not employed', 'Self-employed', 'Retired', 'Active-Military-Duty')),
-    EmergencyContactID VARCHAR(20),
-    FOREIGN KEY (EmergencyContactID) REFERENCES EmergencyContact(EmergencyContactID)
+    EmergencyName VARCHAR(50),
+    RelationshipToPatient VARCHAR(50),
+    EmergencyCellPhone VARCHAR(11),
+    EmergencyWorkPhone VARCHAR(10),
+    EmergencyDateOfBirth DATE
     );
 CREATE TABLE IF NOT EXISTS Insurance (
     InsuranceID VARCHAR(20) PRIMARY KEY,

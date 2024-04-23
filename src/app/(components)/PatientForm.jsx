@@ -6,12 +6,16 @@ import ProgressTracker from './MultiStepForm/ProgressTracker';
 import PatientInfoStep from './MultiStepForm/PatientInfoStep';
 import DynamicForm from './MultiStepForm/DynamicForm';
 
+import { useRouter } from 'next/navigation';
+
 import {useFormData} from './ui/FormDataContext';
 import {steps} from './constants';
 
 
-const PatientForm = (router) => {
-    
+const PatientForm = () => {
+
+    const router = useRouter();
+
     const { formData, handleFormDataChange } = useFormData();
     const [previousStep, setPreviousStep] = useState(0)
     const [currentStep, setCurrentStep] = useState(0)
@@ -26,20 +30,6 @@ const PatientForm = (router) => {
         console.log(formData);
         setCurrentStep(currentStep + 1);
     };
-
-    const connect = (e) =>{
-        const res = fetch('/api/Patient',{
-            method: POST,
-            body: JSON.stringify({formData}),
-            "content-type": "application/json"
-        })
-
-        if (!res.ok){
-            throw new Error('Failed to create Patient.')
-        }
-        router.refresh()
-        router.push("/")
-    }
 
     const onPrevious = () => {
         setCurrentStep(currentStep - 1);

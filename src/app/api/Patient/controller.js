@@ -3,9 +3,9 @@
 // Example database connection
 import { query } from '../../lib/db';
 
-export async function createPatient(relevantValues, keys) {
+export async function createPatient(relevantValues, keys, TOSLICE) {
   try {
-    const placeholders = Array(22).fill('?').join(', ');
+    const placeholders = Array(TOSLICE).fill('?').join(', ');
     // Construct and execute the SQL query
     const result = await query({
       query: `INSERT INTO patient (${keys}) VALUES (${placeholders})`,

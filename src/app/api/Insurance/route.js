@@ -1,9 +1,7 @@
 // pages/api/patients.js
 
 import { NextResponse } from 'next/server';
-import { createItem, getAllItems, updateItem, deleteItem } from '../controller';
-
-const table = 'patient'
+import { createInsurance, getPatient, updatePatient, deletePatient } from '../controller';
 
 export async function POST(req) {
   try {
@@ -15,12 +13,12 @@ export async function POST(req) {
     // Iterate over each patient object
     const responses = await Promise.all(formDataArray.map(async (data) => {
       // Extract values from each patient object up to EmploymentStatus
-      const relevantValues = Object.values(data).slice(0, TOSLICE);
-      const keys = Object.keys(data).slice(0, TOSLICE).join(', ');
+      const relevantValues = Object.values(data).slice(TOSLICE, -1);
+      const keys = Object.keys(data).slice(TOSLICE, -1).join(', ');
       console.log('relevantValues:', relevantValues, 'keys:', keys);
 
       // Create a patient for each formData entry
-      return createItem(relevantValues, keys, table, TOSLICE);
+      return createInsurance(relevantValues, keys, data.length() - TOSLICE);
     }));
 
     // Return an array of responses
@@ -33,8 +31,12 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
-    const patients = await getAllItems(table);
-    return NextResponse.json(patients, { status: 200 });
+    const patient = await getPatient(req.query.id);
+    if (!patient) {
+      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+    } else {
+      return NextResponse.json(patient, { status: 200 });
+    }
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
