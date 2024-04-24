@@ -13,7 +13,7 @@ const Nav = () => {
         <nav className="flex justify-between items-center bg-nav p-4">
             <div className="flex justify-between">
                 {navItems.map((item, index) => (
-                    <div key={index} className="flex justify-center space-x-5 p-2">
+                    <div key={index} className="flex justify-center py-2 pr-2">
                         <Link href={item.link}>
                             <div className="flex justify-center flex-row p-1">
                                 <FontAwesomeIcon icon={item.icon} className="text-sm mb-1" style={{ width: '1.5rem', height: '1.5rem' }} />
