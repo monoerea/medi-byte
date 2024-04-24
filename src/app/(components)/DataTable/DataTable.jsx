@@ -8,7 +8,10 @@ const DataTable = ({ patients }) => {
   const [ascendingOrder, setAscendingOrder] = useState(true); // State for sorting order
   const [sortedColumn, setSortedColumn] = useState([]);
 
-  console.log('Patients',patients);
+  if (allPatients !== patients) {
+    setAllPatients(patients);
+  }
+
   const keys = Object.keys(patients[0]);
 
   const handleToggleAll = (event) => {

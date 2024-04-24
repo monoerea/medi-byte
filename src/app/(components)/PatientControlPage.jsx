@@ -40,7 +40,7 @@ const PatientControlPage = () => {
         const paginatedData = patients.slice(startIndex, endIndex);
         setPaginatedPatients(paginatedData);
       }
-    }, [currentPage, showEntries, filteredPatients, patients, paginatedPatients]);
+    }, [currentPage, showEntries, filteredPatients, patients]);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -59,6 +59,7 @@ const PatientControlPage = () => {
         );
         setFilteredPatients(updatedFilteredPatients);
         console.log('FilteredPatients', filteredPatients);
+        console.log('PaginatedPatients', paginatedPatients);
     };
 
     const handleShowEntriesChange = (value) => {
