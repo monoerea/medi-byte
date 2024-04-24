@@ -1,12 +1,17 @@
-// SideMenu.js
 import React, { useState } from 'react';
 
-const SideMenu = ({ items, toggleCollapsed }) => {
+const SideMenu = ({ items, toggleCollapsed, onLinkClick }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const toggleMenu = () => {
     setCollapsed(!collapsed);
     toggleCollapsed(); // Call the parent component's toggleCollapsed function
+  };
+
+  const handleLinkClick = (item) => {
+    console.log(item);
+    // Call the parent component's onLinkClick function with the clicked item
+    onLinkClick(item);
   };
 
   return (
@@ -25,7 +30,7 @@ const SideMenu = ({ items, toggleCollapsed }) => {
       </div>
       <ul className="flex flex-col flex-1">
         {items.map((item, index) => (
-          <li key={index} className="px-4 py-2 hover:bg-gray-800 flex items-center">
+          <li key={index} className="px-4 py-2 hover:bg-gray-800 flex items-center" onClick={() => handleLinkClick(item.label)}>
             {item.icon}
             {!collapsed && <span>{item.label}</span>}
           </li>

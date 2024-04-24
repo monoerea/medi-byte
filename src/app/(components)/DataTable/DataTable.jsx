@@ -1,22 +1,23 @@
 import React, { useState } from "react";
-import { deletePatient , updatePatient } from "../utils";
+import { deleteItem , updateItems } from "../utils";
 
-const DataTable = ({ patients }) => {
-  const [allPatients, setAllPatients] = useState(patients);
+const DataTable = ({ items, table }) => {
+  const [allItems, setAllItems] = useState(items);
   const [selectedRows, setSelectedRows] = useState([]);
   const [editableRows, setEditableRows] = useState({});
   const [ascendingOrder, setAscendingOrder] = useState(true); // State for sorting order
   const [sortedColumn, setSortedColumn] = useState([]);
 
-  if (allPatients !== patients) {
-    setAllPatients(patients);
+  if (allItems !== items) {
+    setAllItems(items);
+    console.log(Object.values(allItems[0])[0], table);
   }
 
-  const keys = Object.keys(patients[0]);
+  const keys = Object.keys(allItems[0]);
 
   const handleToggleAll = (event) => {
     const isChecked = event.target.checked;
-    const selected = isChecked ? allPatients.map(patient => patient.PatientID) : [];
+    const selected = isChecked ? allItems.map(item => Object.values(item)[0]) : [];
     setSelectedRows(selected);
   };
 
@@ -30,7 +31,7 @@ const DataTable = ({ patients }) => {
   };
 
   const handleEdit = (id) => {
-    const editedRow = { ...allPatients.find(patient => patient.PatientID === id) };
+    const editedRow = { ...allItems.find(item => Object.values(item)[0] === id) };
     setEditableRows(prevState => ({
       ...prevState,
       [id]: editedRow
@@ -40,7 +41,7 @@ const DataTable = ({ patients }) => {
   const handleSave = async (id) => {
     try {
       const editedRow = editableRows[id];
-      const originalRow = allPatients.find(patient => patient.PatientID === id);
+      const originalRow = allItems.find(item => Object.values(item)[0] === id);
   
       // Determine modified columns
       const modifiedColumns = {};
@@ -55,18 +56,18 @@ const DataTable = ({ patients }) => {
       setEditableRows(remainingEditableRows);
       
       // Update the edited row in the filteredPatients array
-      const updatedPatients = allPatients.map(patient => {
-        if (patient.PatientID === id) {
-          return { ...patient, ...modifiedColumns };
+      const updatedItems = allItems.map(item => {
+        if (Object.values(item)[0] === id) {
+          return { ...item, ...modifiedColumns };
         } else {
-          return patient;
+          return item;
         }
       });
 
       // Update the state with the modified data
-      setAllPatients(updatedPatients);
+      setAllItems(updatedItems);
       // Save the modified columns
-      await updatePatient(id, modifiedColumns);
+      await updateItems(id, modifiedColumns, table);
   
       console.log('Editable rows after save:', editableRows);
     } catch (error) {
@@ -77,13 +78,13 @@ const DataTable = ({ patients }) => {
   const handleDelete = async (id) => {
     try {
       // Filter out the deleted patient from allPatients and filteredPatients
-      const updatedAllPatients = allPatients.filter(patient => patient.PatientID !== id);
+      const updatedAllItems = allItems.filter(item => Object.values(item)[0]!== id);
       
       // Update state
-      setAllPatients(updatedAllPatients);
+      setAllItems(updatedAllItems);
        
        // Delete the patient from the server
-      await deletePatient(id);
+      await deleteItem(id, table);
     } catch (error) {
       console.error('Error deleting patient:', error);
     }
@@ -92,7 +93,7 @@ const DataTable = ({ patients }) => {
   const handleOrderChange = (columnName) => {
     // Implement order change logic here
     // Toggle ascending and descending order for the clicked column
-    const sortedData = [...allPatients].sort((a, b) => {
+    const sortedData = [...allItems].sort((a, b) => {
       if (a[columnName] < b[columnName]) {
         return ascendingOrder ? -1 : 1;
       }
@@ -102,7 +103,7 @@ const DataTable = ({ patients }) => {
       return 0;
     });
   
-    setAllPatients(sortedData);
+    setAllItems(sortedData);
     setAscendingOrder(!ascendingOrder); // Toggle ascending/descending order
   
     // Update the state to store the column name for which the order is changed
@@ -137,43 +138,43 @@ const DataTable = ({ patients }) => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {allPatients.map((patient) => (
-            <tr key={patient.PatientID}>
+          {allItems.map((item) => (
+            <tr key={Object.values(item)[0]}>
               <td className="px-1 py-1 sm:px-2 sm:py-1 whitespace-nowrap">
-                <input type="checkbox" onChange={(event) => handleRowSelect(event, patient.PatientID)} checked={selectedRows.includes(patient.PatientID)} />
+                <input type="checkbox" onChange={(event) => handleRowSelect(event, Object.values(item)[0])} checked={selectedRows.includes(Object.values(item)[0])} />
               </td>
               {keys.map((key) => (
                 <td key={key} className="px-1 py-1 sm:px-2 sm:py-1 whitespace-nowrap text-xxs sm:text-xs text-gray-700">
-                  {editableRows[patient.PatientID] ? (
-                    <input type="text" value={editableRows[patient.PatientID][key]} onChange={(e) => {
+                  {editableRows[Object.values(item)[0]] ? (
+                    <input type="text" value={editableRows[Object.values(item)[0]][key]} onChange={(e) => {
                       const value = e.target.value;
                       setEditableRows({
                         ...editableRows,
-                        [patient.PatientID]: {
-                          ...editableRows[patient.PatientID],
+                        [Object.values(item)[0]]: {
+                          ...editableRows[Object.values(item)[0]],
                           [key]: value
                         }
                       });
                     }} />
                   ) : (
-                    typeof patient[key] === 'object' ? JSON.stringify(patient[key]) : patient[key]
+                    typeof item[key] === 'object' ? JSON.stringify(item[key]) : item[key]
                   )}
                 </td>
               ))}
               <td className="px-1 py-1 sm:px-2 sm:py-1 whitespace-nowrap">
-                {editableRows[patient.PatientID] ? (
+                {editableRows[Object.values(item)[0]] ? (
                   <>
-                    <button onClick={() => handleSave(patient.PatientID)} className="text-blue-500">
+                    <button onClick={() => handleSave(Object.values(item)[0])} className="text-blue-500">
                       Save
                     </button>
-                    <button onClick={() => setEditableRows({ ...editableRows, [patient.PatientID]: null })} className="text-gray-500">
+                    <button onClick={() => setEditableRows({ ...editableRows, [Object.values(item)[0]]: null })} className="text-gray-500">
                       Cancel
                     </button>
                   </>
                 ) : (
-                  <button onClick={() => handleEdit(patient.PatientID)} className='text-blue-500 hover:text-blue-900' >Edit</button>
+                  <button onClick={() => handleEdit(Object.values(item)[0])} className='text-blue-500 hover:text-blue-900' >Edit</button>
                 )}
-                <button onClick={() => handleDelete(patient.PatientID)} className="text-red-600 hover:text-red-900">
+                <button onClick={() => handleDelete(Object.values(item)[0])} className="text-red-600 hover:text-red-900">
                   Delete
                 </button>
               </td>

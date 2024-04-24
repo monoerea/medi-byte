@@ -4,7 +4,7 @@ import Pagination from "./ui/Pagination";
 import SearchBar from "./ui/SearchBar";
 import DataTable from "./DataTable/DataTable";
 
-const ControlPage = (item) => {
+const ControlPage = (item, table) => {
     const [items, setItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -16,13 +16,13 @@ const ControlPage = (item) => {
     
     useEffect(() => {
         // Check if item is an array before setting the items state
-        if (Array.isArray(item.items)) {
-            setItems(item.items);
+        if (Array.isArray(item.selectedItem)) {
+            setItems(item.selectedItem);
             setTotalPages(Math.ceil(item.length / showEntries));
         }
     }, [item, showEntries]); // Update items state only when the item prop changes
     
-    console.log('item',item,items, totalPages, showEntries, paginatedItems);
+    console.log('item',item,items, totalPages, showEntries, paginatedItems, table);
     
     useEffect(() => {
         const filtered = items.filter((patient) =>
@@ -77,7 +77,7 @@ const ControlPage = (item) => {
                 </div>
             </div>
 
-            {paginatedItems.length > 0 && <DataTable patients={paginatedItems} />}
+            {paginatedItems.length > 0 && <DataTable items={paginatedItems} table={item.table}/>}
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} showEntries={showEntries}totalEntries={items.length} />
         </div>
     );

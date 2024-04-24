@@ -1,7 +1,7 @@
 // pages/api/patients.js
 
 import { NextResponse } from 'next/server';
-import { createItem, getAllItems, updateItem, deleteItem } from '../controller';
+import { createItem, getAllItems, updateItem, deleteItem, getItem } from '../controller';
 
 const table = 'insurance';
 export async function POST(req) {
@@ -33,12 +33,8 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
-    const patient = await getPatient(req.query.id);
-    if (!patient) {
-      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
-    } else {
-      return NextResponse.json(patient, { status: 200 });
-    }
+    const insurances = await getAllItems(table);
+    return NextResponse.json(insurances, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

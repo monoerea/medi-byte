@@ -32,25 +32,25 @@ export const createObject = async (formData, table) => {
       throw error;
   }
 };
-export const getPatients = async () => {
+export const getItems = async (table) => {
   try {
-    const res = await fetch('http://localhost:3000/api/Patient',{
+    const res = await fetch(`http://localhost:3000/api/${table}`,{
       cache: "no-store"
     })
     return res.json()
   } catch (error) {
-    console.log('Failed to get Patients.', error);
+    console.log(`Failed to get ${table}.`, error);
   }
 
 }
-export async function updatePatient(id, data) {
-  console.log('id',id, data)
+export async function updateItems(id, data, table) {
+  console.log('id',id, data, table);
   const reqBody ={
     id:id,
     body:data
   }
   try {
-      const response = await fetch(`/api/Patient/${id}`, {
+      const response = await fetch(`/api/${table}/${id}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json'
@@ -69,9 +69,9 @@ export async function updatePatient(id, data) {
   }
 }
 
-export async function deletePatient(id) {
+export async function deleteItem(id, table) {
   try {
-    const response = await fetch(`/api/Patient/${id}`, {
+    const response = await fetch(`/api/${table}/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
