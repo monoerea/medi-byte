@@ -107,7 +107,7 @@ export const prefixOptions = [ // Corrected variable name to prefixOptions
       {
         id: 'Step 1',
         name: 'Patient Information',
-        const fields = [
+        fields:[
           { name: 'Prefix', group: 1, type: 'radio', options: prefixOptions },
           { name: 'PatientName', group: 2, type: 'input' },
           { name: 'PreviousNames', group: 3, type: 'input' },
