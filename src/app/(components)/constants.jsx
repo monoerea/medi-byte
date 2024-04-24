@@ -1,3 +1,4 @@
+import { type } from 'os';
 import { validateCellPhone, validateEmail, validateName } from './utils';
 
 export const initData = {
@@ -52,6 +53,55 @@ export const prefixOptions = [ // Corrected variable name to prefixOptions
         { label: 'Ms.', value: 'Ms.' },
         { label: 'Sir', value: 'Sir' }
     ];
+    const maritalOptions = [
+      { option: 'Single' },
+      { option: 'Married' },
+      { option: 'Partner' },
+      { option: 'Divorced' },
+      { option: 'Widowed' },
+      { option: 'Legally Separated' }
+    ];
+    
+    const residenceTypeOptions = [
+      { option: 'Skilled Nursing Home' },
+      { option: 'Nursing Home' },
+      { option: 'Residential Home' },
+      { option: 'Private Home' }
+    ];
+    
+    const genderOptions = [
+      { option: 'Male' },
+      { option: 'Female' },
+      { option: 'Transgender' }
+    ];
+    
+    const preferredContactOptions = [
+      { option: 'Home' },
+      { option: 'Cell' },
+      { option: 'Work' }
+    ];
+    
+    const studentStatusOptions = [
+      { option: 'Full-time' },
+      { option: 'Part-time' },
+      { option: 'Not a Student' }
+    ];
+    
+    const employmentStatusOptions = [
+      { option: 'Full-time' },
+      { option: 'Part-time' },
+      { option: 'Not employed' },
+      { option: 'Self-employed' },
+      { option: 'Retired' },
+      { option: 'Active Military Duty' }
+    ];
+    
+    const isPatientOptions = [
+      { option: 'True' },
+      { option: 'False' }
+    ];
+    
+    
 
     export const steps = [
       {
@@ -59,54 +109,56 @@ export const prefixOptions = [ // Corrected variable name to prefixOptions
         name: 'Patient Information',
         fields: [
           { name: 'Prefix', group: 1, section: 'Patient Information', type: 'radio', options: prefixOptions },
-          { name: 'PatientName', group: 2, section: 'Patient Information' },
-          { name: 'PreviousNames', group: 3, section: 'Patient Information' },
-          { name: 'EmailAddress', group: 4, section: 'Patient Information', validate: validateEmail },
-          { name: 'MailingAddress', group: 4, section: 'Patient Information' },
-          { name: 'MaritalStatus', group: 5, section: 'Patient Information' },
-          { name: 'Gender', group: 5, section: 'Patient Information' },
-          { name: 'CellPhone', group: 5, section: 'Patient Information', validate: validateCellPhone },
-          { name: 'HomeAddress', group: 6, section: 'Patient Information' },
-          { name: 'ResidenceType', group: 6, section: 'Patient Information' },
-          { name: 'PrimaryCarePhysician', group: 7, section: 'Patient Information' },
-          { name: 'DateOfBirth', group: 8, section: 'Patient Information' },
-          { name: 'SSN', group: 8, section: 'Patient Information' },
-          { name: 'HomePhone', group: 9, section: 'Patient Information', validate: validateCellPhone },
-          { name: 'WorkPhone', group: 9, section: 'Patient Information', validate: validateCellPhone },
-          { name: 'PreferredContact', group: 9, section: 'Patient Information' },
-          { name: 'StudentStatus', group: 10, section: 'Patient Information' },
-          { name: 'EmployerName', group: 11, section: 'Employer Information' },
-          { name: 'EmployerAddress', group: 12, section: 'Employer Information' },
-          { name: 'EmployerPhone', group: 13, section: 'Employer Information' },
-          { name: 'EmploymentStatus', group: 13, section: 'Employer Information' },
-          { name: 'EmergencyName', group: 14, section: 'Emergency Information' },
-          { name: 'RelationshipToPatient', group: 15, section: 'Emergency Information' },
-          { name: 'EmergencyCellphone', group: 15, section: 'Emergency Information' },
-          { name: 'EmergencyWorkphone', group: 15, section: 'Emergency Information' },
-          { name: 'EmergencyDateOfBirth', group: 16, section: 'Emergency Information' },
+          { name: 'PatientName', group: 2, type: 'input', section: 'Patient Information' },
+          { name: 'PreviousNames', group: 3, type: 'input', section: 'Patient Information' },
+          { name: 'EmailAddress', group: 4, type: 'input', section: 'Patient Information', validate: validateEmail },
+          { name: 'MailingAddress', group: 4, type: 'input', section: 'Patient Information' },
+          { name: 'MaritalStatus', group: 5, type: 'select', options: maritalOptions, section: 'Patient Information' },
+          { name: 'Gender', group: 5, type: 'select', options: genderOptions, section: 'Patient Information' },
+          { name: 'CellPhone', group: 5, type: 'input', section: 'Patient Information', validate: validateCellPhone },
+          { name: 'HomeAddress', group: 6, type: 'input', section: 'Patient Information' },
+          { name: 'ResidenceType', group: 6, type: 'select', options: residenceTypeOptions, section: 'Patient Information' },
+          { name: 'PrimaryCarePhysician', group: 7, type: 'input', section: 'Patient Information' },
+          { name: 'DateOfBirth', group: 8, type: 'input', section: 'Patient Information' },
+          { name: 'SSN', group: 8, type: 'input', section: 'Patient Information' },
+          { name: 'HomePhone', group: 9, type: 'input', section: 'Patient Information', validate: validateCellPhone },
+          { name: 'WorkPhone', group: 9, type: 'input', section: 'Patient Information', validate: validateCellPhone },
+          { name: 'PreferredContact', group: 9, type: 'select', options: preferredContactOptions, section: 'Patient Information' },
+          { name: 'StudentStatus', group: 10, type: 'select', options: studentStatusOptions, section: 'Patient Information' },
+          { name: 'EmployerName', group: 11, type: 'input', section: 'Employer Information' },
+          { name: 'EmployerAddress', group: 12, type: 'input', section: 'Employer Information' },
+          { name: 'EmployerPhone', group: 13, type: 'input', section: 'Employer Information' },
+          { name: 'EmploymentStatus', group: 13, type: 'select', options: employmentStatusOptions, section: 'Employer Information' },
+          { name: 'EmergencyName', group: 14, type: 'input', section: 'Emergency Information' },
+          { name: 'RelationshipToPatient', group: 15, type: 'input', section: 'Emergency Information' },
+          { name: 'EmergencyCellphone', group: 15, type: 'input', section: 'Emergency Information' },
+          { name: 'EmergencyWorkphone', group: 15, type: 'input', section: 'Emergency Information' },
+          { name: 'EmergencyDateOfBirth', group: 16, type: 'input', section: 'Emergency Information' },
         ]
       },
       {
         id: 'Step 2',
         name: 'Insurance',
         fields: [
-          { name: 'InsuranceCompanyName', group: 1 },
-          { name: 'SubscriberNo', group: 1 },
-          { name: 'GroupNo', group: 1 },
-          { name: 'PolicyHolderName', group: 2 },
-          { name: 'SameAsPatient', group: 2 },
-          { name: 'InsuranceName', group: 3 },
-          { name: 'InsuranceDateOfBirth', group: 3 },
-          { name: 'InsuranceSSN', group: 3 },
-          { name: 'InsuranceTelephone', group: 4 },
-          { name: 'InsuranceGender', group: 4 },
-          { name: 'InsuranceHomeAddress', group: 4 },
-          { name: 'InsuranceEmployer', group: 5 },
-          { name: 'PatientRelationshipToInsured', group: 5 }
+          { name: 'InsuranceCompanyName', group: 1, type:'input' },
+          { name: 'SubscriberNo', group: 2 , type:'input'},
+          { name: 'GroupNo', group: 2, type:'input' },
+          { name: 'PolicyHolderName', group: 3, type:'input' },
+          { name: 'SameAsPatient', group: 4 , type:'select', options:isPatientOptions},
+          { name: 'InsuranceName', group: 5, type:'input' },
+          { name: 'InsuranceDateOfBirth', group: 6, type:'input' },
+          { name: 'InsuranceSSN', group: 6, type:'input' },
+          { name: 'InsuranceTelephone', group: 6, type:'input' },
+          { name: 'InsuranceGender', group: 7, type:'select', options: genderOptions },
+          { name: 'InsuranceHomeAddress', group: 8, type:'input' },
+          { name: 'InsuranceEmployer', group: 9, type:'input' },
+          { name: 'PatientRelationshipToInsured', group: 10, type:'input' }
         ]
       },
       {
         id: 'Step 3',
         name: 'Complete',
+        fields:[]
       }
     ];
+    

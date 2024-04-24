@@ -1,6 +1,7 @@
 import React from 'react';
 import RadioButton from '../ui/RadioButton';
 import AbstractInput from '../ui/AbstractInput';
+import Select from '../ui/Select';
 
 const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
     
@@ -34,14 +35,15 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
             <div className={`mb-4 md:w-${columns} md:gap-4`} key={index}>
                 
                 <label className="block text-gray-700 font-bold mb-2" htmlFor={field.name}>{field.name}</label>
-                {field.type === 'radio' ? (
+                {field.type === 'radio' &&
                     <RadioButton
                         id={field.name}
                         options={field.options}
                         value={formData[field.name]}
                         onSelect={(e) => { handleFormDataChange(field.name, e) }}
                     />
-                ) : (
+                }
+                {field.type === 'input' &&
                     <AbstractInput
                         type={field.type}
                         id={field.name}
@@ -50,7 +52,15 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
                         validate={field.validate}
                         onChange={handleFormDataChange}
                     />
-                )}
+                }
+                {field.type === 'select' &&
+                    <Select
+                        id={field.name}
+                        value={formData[field.name]}
+                        options={field.options}
+                        handleFormDataChange={handleFormDataChange}
+                        />
+                }
             </div>
         ));
     };
