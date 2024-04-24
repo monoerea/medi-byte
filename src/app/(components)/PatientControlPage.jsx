@@ -62,7 +62,7 @@ const PatientControlPage = () => {
 
     return (
         <div className="bg-gray-100 p-4 rounded-lg max-w-screen-l mx-auto min-h-[calc(100vh-84px)]">
-            <div className="flex justify-between items-center mb-4 space-x-4">
+            <div className="flex justify-between items-center mb-4">
                 <SearchBar onSearch={handleSearch} />
                 <div className="text-gray-500"> {/* Apply text-gray-500 for gray color */}
                 Show{" "}
@@ -82,7 +82,6 @@ const PatientControlPage = () => {
             </div>
 
             {paginatedPatients.length > 0 && <DataTable patients={paginatedPatients} />}
-
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} showEntries={showEntries}totalEntries={patients.length} />
         </div>
     );
