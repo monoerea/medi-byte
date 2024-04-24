@@ -10,9 +10,9 @@ const RadioButton = ({ options = [], value: initialValue, onSelect }) => {
     };
 
     return (
-        <div className='flex flex-row justify-evenly p-1'>
+        <div className='flex flex-row xs:flex-col justify-evenly p-1 overflow-x-auto'>
             {options.map((option) => (
-                <div key={option.value} className='w-64 rounded-lg shadow-md overflow-hidden mr-2'>
+                <div key={option.value} className='w-full rounded-lg shadow-md overflow-hidden mr-2 mb-2 xs:mb-0'>
                     <input
                         type="radio"
                         required

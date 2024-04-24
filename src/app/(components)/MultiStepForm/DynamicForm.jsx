@@ -37,17 +37,17 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
                 <label className="block text-gray-700 font-bold mb-2" htmlFor={field.name}>{field.name}</label>
                 {field.type === 'radio' &&
                     <RadioButton
-                        id={field.name}
+                        id={field.id}
                         options={field.options}
-                        value={formData[field.name]}
-                        onSelect={(e) => { handleFormDataChange(field.name, e) }}
+                        value={formData[field.id]}
+                        onSelect={(e) => { handleFormDataChange(field.id, e) }}
                     />
                 }
                 {field.type === 'input' &&
                     <AbstractInput
                         type={field.type}
-                        id={field.name}
-                        value={formData[field.name]}
+                        id={field.id}
+                        value={formData[field.id]}
                         placeholder={field.placeholder}
                         validate={field.validate}
                         onChange={handleFormDataChange}
@@ -55,8 +55,8 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
                 }
                 {field.type === 'select' &&
                     <Select
-                        id={field.name}
-                        value={formData[field.name]}
+                        id={field.id}
+                        value={formData[field.id]}
                         options={field.options}
                         handleFormDataChange={handleFormDataChange}
                         />
