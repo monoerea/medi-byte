@@ -8,8 +8,6 @@ const Nav = () => {
     const navItems = [
         { name: "Home", icon: faHome, link: "/" },
         { name: "Patient", icon: faPerson, link: "/PatientPage/1" },
-        { name: "Messages", icon: faEnvelope, link: "/messages/1" },
-        // Add more items as needed
     ];
     return (
         <nav className="flex justify-between items-center bg-nav p-4">

@@ -7,7 +7,7 @@ import PatientInfoStep from './MultiStepForm/PatientInfoStep';
 import DynamicForm from './MultiStepForm/DynamicForm';
 
 import { useRouter } from 'next/navigation';
-
+import {createObject} from './utils'
 import {useFormData} from './ui/FormDataContext';
 import {steps} from './constants';
 
@@ -49,7 +49,8 @@ const PatientForm = () => {
             console.log('Form data submitted:', formData);
             
             try {
-                await createPatient(formData);
+                await createObject(formData,'Patient');
+                await createObject(formData,'Insurance');
                 router.refresh();
                 router.push("/");
             } catch (error) {
@@ -61,23 +62,7 @@ const PatientForm = () => {
         onNext(event);
     };
     
-    const createPatient = async (formData) => {
-        try {
-            const res = await fetch('/api/Patient', {
-                method: "POST",
-                body: JSON.stringify({ formData }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
     
-            if (!res.ok) {
-                throw new Error('Failed to create Patient.');
-            }
-        } catch (error) {
-            throw error;
-        }
-    };
     
     return (
         <section className='absolute inset-0 flex flex-col max-w-screen-lg max-h-screen mt-20 bg-white rounded-2xl shadow-md px-24  py-3 mx-auto overflow-auto' >

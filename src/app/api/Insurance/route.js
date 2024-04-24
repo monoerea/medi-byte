@@ -1,24 +1,26 @@
 // pages/api/patients.js
 
 import { NextResponse } from 'next/server';
-import { createInsurance, getPatient, updatePatient, deletePatient } from '../controller';
+import { createItem, getAllItems, updateItem, deleteItem } from '../controller';
 
+const table = 'insurance';
 export async function POST(req) {
   try {
     const formData = await req.json();
     
     // Convert formData object into an array of patient objects
     const formDataArray = Object.values(formData);
-    const TOSLICE = 26
+    const TOSLICE = 27
     // Iterate over each patient object
     const responses = await Promise.all(formDataArray.map(async (data) => {
       // Extract values from each patient object up to EmploymentStatus
       const relevantValues = Object.values(data).slice(TOSLICE, -1);
       const keys = Object.keys(data).slice(TOSLICE, -1).join(', ');
-      console.log('relevantValues:', relevantValues, 'keys:', keys);
+      console.log('relevantValues:', relevantValues, 'keys:', keys, Object.values(data).length - TOSLICE);
+      console.log('Insurance', data.InsuranceDateofBirth);
 
       // Create a patient for each formData entry
-      return createInsurance(relevantValues, keys, data.length() - TOSLICE);
+      return createItem(relevantValues, keys, table, (Object.values(data).length - TOSLICE)-1);
     }));
 
     // Return an array of responses

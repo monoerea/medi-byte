@@ -1,5 +1,13 @@
 import { type } from 'os';
 import { validateCellPhone, validateEmail, validateName } from './utils';
+import { faMoneyBill, faPerson, faCog } from '@fortawesome/free-solid-svg-icons';
+
+export const itemList = [
+  { icon: <faPerson className="w-6 h-6 mr-2" />, label: 'Patient' },
+  { icon: <faMoneyBill className="w-6 h-6 mr-2" />, label: 'Insurance' },
+  { icon: <faCog className="w-6 h-6 mr-2" />, label: 'Settings' },
+];
+
 
 export const initData = {
       PatientID: Math.floor(Math.random() * 10000),
@@ -37,7 +45,7 @@ export const initData = {
       PolicyHolderName:'Jocelyn S. Senorin',
       SameAsPatient:false,
       InsuranceName:'Jocelyn S. Senorin',
-      InsuranceDateOfBirth: new Date('03-24-1973'),
+      InsuranceDateOfBirth: '1973-03-24',
       InsuranceSSN:'2134567890',
       InsuranceTelephone:'5678904321',
       InsuranceGender:'Female',

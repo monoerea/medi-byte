@@ -15,7 +15,23 @@ export const validateCellPhone = (cellPhone) => {
 export const validateMiddleInitial = (middleInitial) => {
   return /^.{1}\.$/.test(middleInitial);
 };
+export const createObject = async (formData, table) => {
+  try {
+      const res = await fetch(`/api/${table}`, {
+          method: "POST",
+          body: JSON.stringify({ formData }),
+          headers: {
+              "Content-Type": "application/json"
+          }
+      });
 
+      if (!res.ok) {
+          throw new Error('Failed to create Patient.');
+      }
+  } catch (error) {
+      throw error;
+  }
+};
 export const getPatients = async () => {
   try {
     const res = await fetch('http://localhost:3000/api/Patient',{

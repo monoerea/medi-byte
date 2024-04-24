@@ -1,5 +1,4 @@
 
-Drop table Patient, Insurance, PatientInsurance;
 
 CREATE TABLE IF NOT EXISTS Patient (
     PatientID VARCHAR(20) PRIMARY KEY,
@@ -38,12 +37,12 @@ CREATE TABLE IF NOT EXISTS Insurance (
     PolicyHolderName VARCHAR(50),
     SameAsPatient BOOLEAN,
     InsuranceName VARCHAR(50),
-    DateOfBirth DATE,
-    SSN VARCHAR(20),
-    Telephone VARCHAR(20),
-    Gender VARCHAR(10) CHECK (Gender IN ('Male', 'Female', 'Transgender')),
-    HomeAddress VARCHAR(255),
-    Employer VARCHAR(50),
+    InsuranceDateOfBirth DATE,
+    InsuranceSSN VARCHAR(20),
+    InsuranceTelephone VARCHAR(20),
+    InsuranceGender VARCHAR(10) CHECK (InsuranceGender IN ('Male', 'Female', 'Transgender')),
+    InsuranceHomeAddress VARCHAR(255),
+    InsuranceEmployer VARCHAR(50),
     PatientRelationshipToInsured VARCHAR(50)
 );
 CREATE TABLE IF NOT EXISTS PatientInsurance (
