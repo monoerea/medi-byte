@@ -4,48 +4,44 @@ import Pagination from "./ui/Pagination";
 import SearchBar from "./ui/SearchBar";
 import DataTable from "./DataTable/DataTable";
 
-const PatientControlPage = () => {
-    const [patients, setPatients] = useState([]);
+const ControlPage = (item) => {
+    const [items, setItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [showEntries, setShowEntries] = useState(10);
     const [searchQuery, setSearchQuery] = useState(""); // State for search query
-    const [filteredPatients, setFilteredPatients] = useState([]);
-    const [paginatedPatients, setPaginatedPatients] = useState([]);
+    const [filteredItems, setFilteredItems] = useState([]);
+    const [paginatedItems, setPaginatedItems] = useState([]);
 
+    
     useEffect(() => {
-        const fetchPatients = async () => {
-            try {
-                const patientsData = await getPatients();
-                console.log("Fetched patients:", patientsData); // Log fetched patients
-                setPatients(patientsData);
-                setTotalPages(Math.ceil(patientsData.length / showEntries)); // Assuming 10 patients per page
-            } catch (error) {
-                console.error("Error fetching patients:", error);
-            }
-        };
-
-        fetchPatients();
-    }, [showEntries]);
-
+        // Check if item is an array before setting the items state
+        if (Array.isArray(item.items)) {
+            setItems(item.items);
+            setTotalPages(Math.ceil(item.length / showEntries));
+        }
+    }, [item, showEntries]); // Update items state only when the item prop changes
+    
+    console.log('item',item,items, totalPages, showEntries, paginatedItems);
+    
     useEffect(() => {
-        const filtered = patients.filter((patient) =>
+        const filtered = items.filter((patient) =>
             Object.values(patient).some(
                 (value) =>
                     typeof value === "string" &&
                     value.toLowerCase().includes(searchQuery.toLowerCase())
             )
         );
-        setFilteredPatients(filtered);
+        setFilteredItems(filtered);
         setTotalPages(Math.ceil(filtered.length / showEntries));
-    }, [searchQuery, patients, showEntries]);
+    }, [searchQuery, items, showEntries]);
 
     useEffect(() => {
         const startIndex = (currentPage - 1) * showEntries;
         const endIndex = startIndex + showEntries;
-        const paginatedData = searchQuery ? filteredPatients.slice(startIndex, endIndex) : patients.slice(startIndex, endIndex);
-        setPaginatedPatients(paginatedData);
-    }, [currentPage, showEntries, searchQuery, filteredPatients, patients]);
+        const paginatedData = searchQuery ? filteredItems.slice(startIndex, endIndex) : items.slice(startIndex, endIndex);
+        setPaginatedItems(paginatedData);
+    }, [currentPage, showEntries, searchQuery, filteredItems, items]);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -81,10 +77,10 @@ const PatientControlPage = () => {
                 </div>
             </div>
 
-            {paginatedPatients.length > 0 && <DataTable patients={paginatedPatients} />}
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} showEntries={showEntries}totalEntries={patients.length} />
+            {paginatedItems.length > 0 && <DataTable patients={paginatedItems} />}
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} showEntries={showEntries}totalEntries={items.length} />
         </div>
     );
 };
 
-export default PatientControlPage;
+export default ControlPage;
