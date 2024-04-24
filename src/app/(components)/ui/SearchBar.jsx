@@ -1,4 +1,3 @@
-// SearchBar.jsx
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -6,8 +5,10 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
 
-  const handleChange = (e) => {
-    setQuery(e.target.value);
+  const handleChange = (event) => {
+    console.log(event.target.value);
+    setQuery(event.target.value);
+    onSearch(event.target.value); // Ensure onSearch prop is invoked with the query
   };
 
   const handleSubmit = (e) => {
@@ -16,7 +17,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 mb-4 flex items-center">
+    <form onSubmit={handleSubmit} className="mt-4 mb-4 flex items-center text-gray-500">
       <input
         type="text"
         value={query}

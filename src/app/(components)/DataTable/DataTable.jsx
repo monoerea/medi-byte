@@ -1,25 +1,19 @@
 import React, { useState } from "react";
-import DataTableHeader from './DataTableHeader';
 import { deletePatient , updatePatient } from "../utils";
 
 const DataTable = ({ patients }) => {
   const [allPatients, setAllPatients] = useState(patients);
-  const [filteredPatients, setFilteredPatients] = useState(patients);
   const [selectedRows, setSelectedRows] = useState([]);
   const [editableRows, setEditableRows] = useState({});
+  const [ascendingOrder, setAscendingOrder] = useState(true); // State for sorting order
+  const [sortedColumn, setSortedColumn] = useState([]);
 
+  console.log('Patients',patients);
   const keys = Object.keys(patients[0]);
-
-  const handleFilter = (filters) => {
-    const filteredData = allPatients.filter((patient) => {
-      return Object.keys(filters).every((key) => patient[key] === filters[key]);
-    });
-    setFilteredPatients(filteredData);
-  };
 
   const handleToggleAll = (event) => {
     const isChecked = event.target.checked;
-    const selected = isChecked ? filteredPatients.map(patient => patient.PatientID) : [];
+    const selected = isChecked ? allPatients.map(patient => patient.PatientID) : [];
     setSelectedRows(selected);
   };
 
@@ -53,22 +47,21 @@ const DataTable = ({ patients }) => {
         }
       });
   
+      // Remove the edited row from editableRows
+      const { [id]: _, ...remainingEditableRows } = editableRows;
+      setEditableRows(remainingEditableRows);
+      
       // Update the edited row in the filteredPatients array
-      const updatedFilteredPatients = filteredPatients.map(patient => {
+      const updatedPatients = allPatients.map(patient => {
         if (patient.PatientID === id) {
           return { ...patient, ...modifiedColumns };
         } else {
           return patient;
         }
       });
-  
+
       // Update the state with the modified data
-      setFilteredPatients(updatedFilteredPatients);
-  
-      // Remove the edited row from editableRows
-      const { [id]: _, ...remainingEditableRows } = editableRows;
-      setEditableRows(remainingEditableRows);
-  
+      setAllPatients(updatedPatients);
       // Save the modified columns
       await updatePatient(id, modifiedColumns);
   
@@ -80,16 +73,12 @@ const DataTable = ({ patients }) => {
 
   const handleDelete = async (id) => {
     try {
-
       // Filter out the deleted patient from allPatients and filteredPatients
       const updatedAllPatients = allPatients.filter(patient => patient.PatientID !== id);
-      const updatedFilteredPatients = filteredPatients.filter(patient => patient.PatientID !== id);
       
       // Update state
       setAllPatients(updatedAllPatients);
-      setFilteredPatients(updatedFilteredPatients);
-           
-  
+       
        // Delete the patient from the server
       await deletePatient(id);
     } catch (error) {
@@ -97,10 +86,31 @@ const DataTable = ({ patients }) => {
     }
   };
 
+  const handleOrderChange = (columnName) => {
+    // Implement order change logic here
+    // Toggle ascending and descending order for the clicked column
+    const sortedData = [...allPatients].sort((a, b) => {
+      if (a[columnName] < b[columnName]) {
+        return ascendingOrder ? -1 : 1;
+      }
+      if (a[columnName] > b[columnName]) {
+        return ascendingOrder ? 1 : -1;
+      }
+      return 0;
+    });
+  
+    setAllPatients(sortedData);
+    setAscendingOrder(!ascendingOrder); // Toggle ascending/descending order
+  
+    // Update the state to store the column name for which the order is changed
+    setSortedColumn(columnName);
+  };
+  
+  
+
   return (
     <div className="max-w-full mx-auto max-h-screen overflow-x-scroll">
       <table className="w-full divide-y divide-gray-200">
-        <DataTableHeader keys={keys} onFilter={handleFilter} />
         <thead className="bg-gray-50">
           <tr>
             <th className="px-1 py-1 sm:px-2 sm:py-1 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
@@ -108,14 +118,23 @@ const DataTable = ({ patients }) => {
             </th>
             {keys.map((key) => (
               <th key={key} className="px-1 py-1 sm:px-2 sm:py-1 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                {key}
-              </th>
+              <div className="flex items-center">
+                <span>{key}</span>
+                {sortedColumn === key ? (
+                  <button className="ml-2" onClick={() => handleOrderChange(key)}>
+                    {ascendingOrder ? "↑" : "↓"}
+                  </button>
+                    ) : <button className="ml-2" onClick={() => handleOrderChange(key)}>
+                    { "↑" }
+                  </button>}
+              </div>
+            </th>            
             ))}
             <th className="px-1 py-1 sm:px-2 sm:py-1 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {filteredPatients.map((patient) => (
+          {allPatients.map((patient) => (
             <tr key={patient.PatientID}>
               <td className="px-1 py-1 sm:px-2 sm:py-1 whitespace-nowrap">
                 <input type="checkbox" onChange={(event) => handleRowSelect(event, patient.PatientID)} checked={selectedRows.includes(patient.PatientID)} />
