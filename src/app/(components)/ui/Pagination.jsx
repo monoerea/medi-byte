@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Pagination = ({ currentPage, totalPages, onPageChange, showEntries, totalEntries }) => {
   const handlePrevPage = () => {
@@ -14,14 +14,17 @@ const Pagination = ({ currentPage, totalPages, onPageChange, showEntries, totalE
 
     // If there are more remaining entries than showEntries, update the pagination
     if (remainingEntries > 0) {
-      onPageChange(nextPage + 1);
+      onPageChange(nextPage);
     }
   };
+
+  const startEntry = (currentPage - 1) * showEntries + 1;
+  const endEntry = Math.min(currentPage * showEntries, totalEntries);
 
   return (
     <div className="flex justify-between items-center mt-4 text-gray-500">
       <div>
-        Showing {currentPage} to {Math.min(currentPage * showEntries, totalEntries)} of {totalEntries} entries
+        Showing {startEntry} to {endEntry} of {totalEntries} entries
       </div>
       <div className="flex">
         <button
