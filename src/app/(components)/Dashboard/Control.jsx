@@ -9,26 +9,23 @@ import { getItems } from '../../(components)/utils';
 const Dashboard = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [items, setItems] = useState([]); // Initialize items state with an empty array
-    const [selectedItem, setSelectedItem] = useState('Patient'); // Initialize selectedItem state with 'Patient'
+    const [selectedItem, setSelectedItem] = useState('Insurance'); // Initialize selectedItem state with 'Patient'
   
     const toggleCollapsed = () => {
       setCollapsed(!collapsed);
     };
-  
+
+    
     useEffect(() => {
-      // Fetch patient data when the component mounts
-      const fetchDefaultData = async () => {
-        try {
-          const patientsData = await getItems('Patient');
-          setItems(patientsData);
-          console.log('Fetched patients:', patientsData);
-        } catch (error) {
-          console.error('Error fetching patient data:', error);
-        }
-      };
-  
-      fetchDefaultData(); // Call the function to fetch patient data
-    }, []); // Empty dependency array to ensure this effect runs only once on mount
+        const fetchDefaultData = async (item) => {if (selectedItem === item) {
+            const data = await getItems(item);
+            setItems(data);
+            // Set insurance data in state or handle it as needed
+            console.log(`Fetched ${item}s:`, data);
+            }}
+        fetchDefaultData(selectedItem);
+      // Call the function to fetch patient data
+    }, [selectedItem]); // Empty dependency array to ensure this effect runs only once on mount
   
     const handleLinkClick = async (item) => {
       setSelectedItem(item); // Update the selected item state
@@ -56,8 +53,8 @@ const Dashboard = () => {
         </div>
   
         <div className="overflow-auto max-w-screen min-h-[calc(100vh-84px)]">
-          {/* Render ControlPage component with the selected item passed as prop */}
-          {selectedItem && items && <ControlPage selectedItem={items} table={selectedItem} />}
+
+          {selectedItem && items && <ControlPage item={items} table={selectedItem} />}
         </div>
       </div>
     );

@@ -4,7 +4,7 @@ import Pagination from "./ui/Pagination";
 import SearchBar from "./ui/SearchBar";
 import DataTable from "./DataTable/DataTable";
 
-const ControlPage = (item, table) => {
+const ControlPage = ({item, table}) => {
     const [items, setItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -16,11 +16,13 @@ const ControlPage = (item, table) => {
     
     useEffect(() => {
         // Check if item is an array before setting the items state
-        if (Array.isArray(item.selectedItem)) {
-            setItems(item.selectedItem);
+        if (Array.isArray(item)) {
+            const newItems = [...item];
+            setItems(newItems);
             setTotalPages(Math.ceil(item.length / showEntries));
         }
-    }, [item, showEntries]); // Update items state only when the item prop changes
+    }, [item, showEntries]);
+    
     
     console.log('item',item,items, totalPages, showEntries, paginatedItems, table);
     
@@ -77,7 +79,7 @@ const ControlPage = (item, table) => {
                 </div>
             </div>
 
-            {paginatedItems.length > 0 && <DataTable items={paginatedItems} table={item.table}/>}
+            {paginatedItems.length > 0 && <DataTable items={paginatedItems} table={table}/>}
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} showEntries={showEntries}totalEntries={items.length} />
         </div>
     );

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { deleteItem , updateItems } from "../utils";
 
 const DataTable = ({ items, table }) => {
+  const [prevItems, setPrevItems] = useState([]);
   const [allItems, setAllItems] = useState(items);
   const [selectedRows, setSelectedRows] = useState([]);
   const [editableRows, setEditableRows] = useState({});
@@ -9,6 +10,25 @@ const DataTable = ({ items, table }) => {
   const [sortedColumn, setSortedColumn] = useState([]);
 
   const keys = Object.keys(allItems[0]);
+
+  useEffect(() => {
+    // Check if item is an array before setting the items state
+    if (Array.isArray(items)) {
+        setPrevItems(items);
+        setAllItems(items);
+    }
+  }, [items]);
+
+  useEffect(() => {
+      // Update allItems only when items change
+      if (items !== prevItems) {
+          setAllItems(items);
+          setPrevItems(items);
+          console.log("Updated allItems:", items);
+          console.log("Table:", table);
+      }
+  }, [items, prevItems, table]);
+
 
   const handleToggleAll = (event) => {
     const isChecked = event.target.checked;
@@ -60,7 +80,7 @@ const DataTable = ({ items, table }) => {
       });
 
       // Update the state with the modified data
-      console.log(updatedItems, updatedItems === allItems);
+      // console.log(updatedItems, updatedItems === allItems);
       setAllItems(updatedItems);
 
       // Save the modified columns
