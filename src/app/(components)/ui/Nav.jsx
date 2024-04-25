@@ -1,13 +1,16 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPerson, faSearch, faEnvelope, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faPerson, faSearch, faEnvelope, faHome, faDashboard } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import Dashboard from '../../page';
+import { link } from 'fs';
 
 const Nav = () => {
 
     const navItems = [
         { name: "Home", icon: faHome, link: "/" },
         { name: "Patient", icon: faPerson, link: "/PatientPage/1" },
+        { name:'Dashboard', icon: faDashboard, link:'/Dashboard/1'}
     ];
     return (
         <nav className="flex justify-between items-center bg-nav p-4">

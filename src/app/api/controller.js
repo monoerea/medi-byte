@@ -63,7 +63,7 @@ export async function getItem(itemId, table) {
       const values = Object.values(itemData);
       // Perform database query to update item by ID
       await query({
-        query: `UPDATE ${table} SET ${setClause} WHERE PatientID = ?`,
+        query: `UPDATE ${table} SET ${setClause} WHERE ${table}ID = ?`,
         values: [...values, itemId]
       });
   

@@ -8,11 +8,6 @@ const DataTable = ({ items, table }) => {
   const [ascendingOrder, setAscendingOrder] = useState(true); // State for sorting order
   const [sortedColumn, setSortedColumn] = useState([]);
 
-  if (allItems !== items) {
-    setAllItems(items);
-    console.log(Object.values(allItems[0])[0], table);
-  }
-
   const keys = Object.keys(allItems[0]);
 
   const handleToggleAll = (event) => {
@@ -37,12 +32,12 @@ const DataTable = ({ items, table }) => {
       [id]: editedRow
     }));
   };
-  
+
   const handleSave = async (id) => {
     try {
       const editedRow = editableRows[id];
       const originalRow = allItems.find(item => Object.values(item)[0] === id);
-  
+
       // Determine modified columns
       const modifiedColumns = {};
       Object.keys(editedRow).forEach(key => {
@@ -50,12 +45,12 @@ const DataTable = ({ items, table }) => {
           modifiedColumns[key] = editedRow[key];
         }
       });
-  
+
       // Remove the edited row from editableRows
       const { [id]: _, ...remainingEditableRows } = editableRows;
       setEditableRows(remainingEditableRows);
-      
-      // Update the edited row in the filteredPatients array
+
+      // Update the edited row in the allItems array
       const updatedItems = allItems.map(item => {
         if (Object.values(item)[0] === id) {
           return { ...item, ...modifiedColumns };
@@ -65,11 +60,14 @@ const DataTable = ({ items, table }) => {
       });
 
       // Update the state with the modified data
+      console.log(updatedItems, updatedItems === allItems);
       setAllItems(updatedItems);
+
       // Save the modified columns
       await updateItems(id, modifiedColumns, table);
-  
+
       console.log('Editable rows after save:', editableRows);
+      console.log('All items after save', allItems);
     } catch (error) {
       console.error('Error saving patient:', error);
     }
@@ -77,13 +75,15 @@ const DataTable = ({ items, table }) => {
 
   const handleDelete = async (id) => {
     try {
-      // Filter out the deleted patient from allPatients and filteredPatients
-      const updatedAllItems = allItems.filter(item => Object.values(item)[0]!== id);
-      
+      // Filter out the deleted patient from allItems and filteredPatients
+      const updatedAllItems = allItems.filter(item => Object.values(item)[0] !== id);
+
       // Update state
       setAllItems(updatedAllItems);
-       
-       // Delete the patient from the server
+
+      console.log('All items after delete', allItems);
+
+      // Delete the patient from the server
       await deleteItem(id, table);
     } catch (error) {
       console.error('Error deleting patient:', error);
@@ -91,25 +91,28 @@ const DataTable = ({ items, table }) => {
   };
 
   const handleOrderChange = (columnName) => {
-    // Implement order change logic here
     // Toggle ascending and descending order for the clicked column
+    setAscendingOrder(columnName === sortedColumn ? !ascendingOrder : true);
+    setSortedColumn(columnName);
+
+    // Implement sorting logic here
     const sortedData = [...allItems].sort((a, b) => {
-      if (a[columnName] < b[columnName]) {
+      const valueA = a[columnName];
+      const valueB = b[columnName];
+
+      // Adjust comparison based on ascending or descending order
+      if (valueA < valueB) {
         return ascendingOrder ? -1 : 1;
       }
-      if (a[columnName] > b[columnName]) {
+      if (valueA > valueB) {
         return ascendingOrder ? 1 : -1;
       }
       return 0;
     });
-  
+
     setAllItems(sortedData);
-    setAscendingOrder(!ascendingOrder); // Toggle ascending/descending order
-  
-    // Update the state to store the column name for which the order is changed
-    setSortedColumn(columnName);
-  };
-  
+    console.log('All items after arrange', allItems);
+  };  
   
 
   return (

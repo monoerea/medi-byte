@@ -4,11 +4,11 @@ import { NextResponse } from 'next/server';
 const table = 'insurance'
 export async function GET(req) {
   try {
-    const patient = await getItem(req.query.id, table);
-    if (!patient) {
+    const item = await getItem(req.query.id, table);
+    if (!item) {
       return NextResponse.json({ error: `${table} not found`}, { status: 404 });
     } else {
-      return NextResponse.json(patient, { status: 200 });
+      return NextResponse.json(item, { status: 200 });
     }
   } catch (error) {
     console.error(error);
@@ -23,6 +23,9 @@ export async function PUT(req) {
     console.log('formData', formData);
 
     const {id, body} = formData;
+    const relevantValues = Object.values(body);
+    const keys = Object.keys(body);
+    console.log('relevantValues:', relevantValues, 'keys:', keys);
     // Assuming formData contains the updated data
 
     // Update the patient with the provided id

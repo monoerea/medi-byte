@@ -17,7 +17,7 @@ export async function POST(req) {
       const relevantValues = Object.values(data).slice(TOSLICE, -1);
       const keys = Object.keys(data).slice(TOSLICE, -1).join(', ');
       console.log('relevantValues:', relevantValues, 'keys:', keys, Object.values(data).length - TOSLICE);
-      console.log('Insurance', data.InsuranceDateofBirth);
+      console.log('Insurance', relevantValues, keys);
 
       // Create a patient for each formData entry
       return createItem(relevantValues, keys, table, (Object.values(data).length - TOSLICE)-1);
