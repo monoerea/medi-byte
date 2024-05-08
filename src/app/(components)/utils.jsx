@@ -15,6 +15,30 @@ export const validateCellPhone = (cellPhone) => {
 export const validateMiddleInitial = (middleInitial) => {
   return /^.{1}\.$/.test(middleInitial);
 };
+export const isValid = (formData) => {
+  const checkNestedArrays = (data) => {
+    if (Array.isArray(data)) {
+      return data.every(value => {
+        if (Array.isArray(value)) {
+          return checkNestedArrays(value);
+        } else {
+          return value !== '';
+        }
+      });
+    } else {
+      return true;
+    }
+  };
+
+  return Object.values(formData).every(value => {
+    if (Array.isArray(value)) {
+      return checkNestedArrays(value);
+    } else {
+      return value !== '';
+    }
+  });
+};
+
 export const createObject = async (formData, table) => {
   try {
       const res = await fetch(`/api/${table}`, {

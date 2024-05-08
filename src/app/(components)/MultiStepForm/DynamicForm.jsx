@@ -3,7 +3,8 @@ import RadioButton from '../ui/RadioButton';
 import AbstractInput from '../ui/AbstractInput';
 import Select from '../ui/Select';
 
-const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
+const DynamicForm = ({ fields, formData, handleFormDataChange, index }) => {
+    console.log('Index:', index);
     
     // Get unique group numbers
     const groupNumbers = [...new Set(fields.fields.map(field => field.group))];
@@ -30,36 +31,37 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
         const columns = Math.min(numberOfFieldsInGroup, maxColumns);
     
         // Render each field in the group
-        return fieldsInGroup.map((field, index) => (
+        return fieldsInGroup.map((field, idx) => (
             
-            <div className={`mb-4 md:w-${columns} md:gap-4`} key={index}>
+            <div className={`mb-4 md:w-${columns} md:gap-4`} key={idx}>
                 
                 <label className="block text-gray-700 font-bold mb-2" htmlFor={field.name}>{field.name}</label>
                 {field.type === 'radio' &&
                     <RadioButton
                         id={field.id}
                         options={field.options}
-                        value={formData[field.id]}
-                        onSelect={(e) => { handleFormDataChange(field.id, e) }}
+                        value={index !== undefined ? formData[field.id][index] : formData[field.id]}
+                        onSelect={(e) => { handleFormDataChange(field.id, e, index) }}
                     />
                 }
                 {field.type === 'input' &&
                     <AbstractInput
-                        type={field.type}
-                        id={field.id}
-                        value={formData[field.id]}
-                        placeholder={field.placeholder}
-                        validate={field.validate}
-                        onChange={handleFormDataChange}
+                    type={field.type}
+                    id={field.id}
+                    value={index !== undefined ? formData[field.id][index] : formData[field.id]
+                    }                                
+                    placeholder={field.placeholder}
+                    validate={field.validate}
+                    onChange={handleFormDataChange} // Pass index here
                     />
                 }
                 {field.type === 'select' &&
                     <Select
                         id={field.id}
-                        value={formData[field.id]}
+                        value={index !== undefined ? formData[field.id][index] : formData[field.id]}
                         options={field.options}
-                        handleFormDataChange={handleFormDataChange}
-                        />
+                        onChange={handleFormDataChange}
+                    />
                 }
             </div>
         ));
@@ -70,8 +72,8 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
         <div className='grid grid-cols-1'>
             <h2 className="text-xl text-center font-semibold text-black">{fields.name}</h2>
             {/* Render fields for each group */}
-            {groupNumbers.map((groupNumber, index) => (
-                <div key={index}>
+            {groupNumbers.map((groupNumber, idx) => (
+                <div key={idx}>
                     <div className={`grid md:grid-cols-${maxNumberOfFieldsInEachGroup(groupNumber)} md:gap-4 mb-4 xs:grid-cols-1`}>
                         {renderFieldsByGroup(groupNumber)}
                     </div>
@@ -82,4 +84,3 @@ const DynamicForm = ({ fields, formData, handleFormDataChange }) => {
 };
 
 export default DynamicForm;
-

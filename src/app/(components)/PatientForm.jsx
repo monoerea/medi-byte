@@ -7,7 +7,7 @@ import PatientInfoStep from './MultiStepForm/PatientInfoStep';
 import DynamicForm from './MultiStepForm/DynamicForm';
 
 import { useRouter } from 'next/navigation';
-import {createObject} from './utils'
+import {createObject, isValid} from './utils'
 import {useFormData} from './ui/FormDataContext';
 import {steps} from './constants';
 
@@ -16,11 +16,12 @@ const PatientForm = () => {
 
     const router = useRouter();
 
-    const { formData, handleFormDataChange } = useFormData();
+    const { formData, handleFormDataChange, setFormData } = useFormData();
     const [previousStep, setPreviousStep] = useState(0)
     const [currentStep, setCurrentStep] = useState(0)
     const [error, setError] = useState('');
-    
+    const [add, setAdd] = useState([]);
+
     const delta = currentStep - previousStep
     
     const onNext = (e) => {
@@ -35,13 +36,42 @@ const PatientForm = () => {
         setCurrentStep(currentStep - 1);
     };
     
+    const handleAdd = () => {
+        formData.InsuranceID.push(Math.floor(Math.random() * 10000));
+        setAdd([...add, {}]); // Add an empty object (representing a new form) to the add array
+    };  
+    
+    const renderMultiForm = () => {
+        return add.map((_, index) => {
+            console.log('Index in renderMultiForm:', index);
+            return (
+                <DynamicForm
+                    key={index}
+                    index={index} // Increment the index by 1
+                    fields={steps[1]} // Assuming you want to use the same fields for the additional forms
+                    formData={formData} // Pass the entire formData object
+                    handleFormDataChange={(id, value) => {
+                        // Check if the field belongs to insurance data based on the id
+                        const isInsuranceField = Object.keys(formData).indexOf(id) > Object.keys(formData).indexOf('InsuranceID');
+                        console.log(`isInsuranceField for index ${index}:`, isInsuranceField, Object.keys(formData).indexOf(id), Object.keys(formData).indexOf('InsuranceID')); // Log the isInsuranceField value                    
+    
+                        // Call handleFormDataChange with the provided index
+                        handleFormDataChange(id, value, index);
+
+                    }}
+                />
+            );
+        });
+    };
+    
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
     
         // Perform validation
-        const isValid = Object.values(formData).every(value => value !== '');
+        const valid = isValid(formData);
     
-        if (!isValid) {
+        if (!valid) {
             setError('Not all fields have been filled.');
             console.log('Form validation failed. Please check your input.',formData);
         } else {
@@ -56,6 +86,7 @@ const PatientForm = () => {
             } catch (error) {
                 console.error("Error creating patient:", error);
                 setError("Failed to create patient. Please try again.");
+                setCurrentStep(0);
             }
         }
     
@@ -63,22 +94,28 @@ const PatientForm = () => {
     };
     
     
-    
     return (
         <section className='absolute inset-0 flex flex-col max-w-screen-lg max-h-screen mt-20 bg-white rounded-2xl shadow-md px-24  py-3 mx-auto overflow-auto' >
             <ProgressTracker currentStep={currentStep} />
             <form className="justify-around" onSubmit={handleSubmit} method='post'>
-                {/* {currentStep == 1 && 
-                <PatientInfoStep formData={formData} handleFormDataChange={handleFormDataChange}   />
-                }  */}
                 {currentStep == 0 && 
                 <DynamicForm fields={ steps[0]} formData={formData} handleFormDataChange={handleFormDataChange}   />
                 } 
-                {currentStep == 1 && 
-                <DynamicForm fields={ steps[1]} formData={formData} handleFormDataChange={handleFormDataChange}   />
-                } 
+                {currentStep === 1 && (
+                    <div>
+                        <button type="button" onClick={handleAdd} className="rounded bg-gray-300 py-2 px-4 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-500">
+                            Add Form
+                        </button>
+                        {renderMultiForm()}
+                    </div>
+                )}
+                
                 {currentStep == 2 && 
-                <DynamicForm fields={ steps[2]} formData={formData} handleFormDataChange={handleFormDataChange}   />
+                <div>
+                    <DynamicForm fields={ steps[2]} formData={formData} handleFormDataChange={handleFormDataChange}   />
+                    
+                </div>
+                
                 } 
                 {error && (
                 <p className='mt-2 text-sm text-red-400 text-center'>{error}</p>

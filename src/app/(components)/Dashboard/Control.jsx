@@ -5,7 +5,7 @@ import ControlPage from '../../(components)/ControlPage';
 import SideMenu from '../../(components)/ui/SideMenu';
 import { itemList } from '../../(components)/constants';
 import { getItems } from '../../(components)/utils';
-
+import DataSection from './DataSection';
 const Dashboard = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [items, setItems] = useState([]); // Initialize items state with an empty array
@@ -51,8 +51,12 @@ const Dashboard = () => {
         <div className={`text-gray-700 ${collapsed ? 'w-16' : 'w-64'}`}>
           <SideMenu items={itemList} toggleCollapsed={toggleCollapsed} onLinkClick={handleLinkClick} />
         </div>
-  
-        <div className="overflow-auto max-w-screen min-h-[calc(100vh-84px)]">
+        {/* min-h-[calc(100vh-84px)] */}
+        <div className="overflow-auto max-w-screen min-h-[calc(100vh-500px)]">
+
+
+          
+          <DataSection/>
 
           {selectedItem && items && <ControlPage item={items} table={selectedItem} />}
         </div>

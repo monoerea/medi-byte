@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -46,3 +48,24 @@ body {
 .container::-webkit-scrollbar-thumb {
   background-color: transparent; 
 }
+/* The percentage */
+.water-circle {
+  width: 100px;
+  height: 100px;
+}
+
+.water-circle-border {
+  stroke-dasharray: 0, 300;
+  animation: border-fill 3s infinite;
+}
+
+.water-circle-inside {
+  stroke-dashoffset: 300;
+}
+
+@keyframes border-fill {
+  to {
+      stroke-dasharray: 300, 0;
+  }
+}
+

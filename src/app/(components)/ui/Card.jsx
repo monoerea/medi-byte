@@ -1,8 +1,10 @@
 import React from 'react'
 
-function Card() {
+function Card({children}) {
   return (
-    <div className={''}></div>
+    <div className="bg-inherit shadow-lg hover:bg-gray-500">
+        {children}
+    </div>
   )
 }
 

@@ -10,50 +10,50 @@ export const itemList = [
 
 
 export const initData = {
-      PatientID: Math.floor(Math.random() * 10000),
-      Prefix: "Ms.",
-      PatientName: "Senorin, Sheen S.",
-      PreviousNames: "Alice March",
-      EmailAddress: "sheen@gmail.com",
-      MailingAddress:"5209 Kawit, Gloria, Oriental Mindoro",
-      MaritalStatus:'Single',
-      Gender: "Female",
-      CellPhone: "911234567",//
-      HomeAddress:"5209 Kawit, Gloria, Oriental Mindoro",
-      ResidenceType:"Private Home",
-      PrimaryCarePhysician:"Dr. Kim Taehyung",
-      DateOfBirth: '2001-03-21',
-      SSN:'123123423',
-      HomePhone:'1234123',
-      WorkPhone:"1234123",
-      PreferredContact:"Home",
-      StudentStatus:'Full-time',
-      EmployerName:'Kim Taehyung',
-      EmployerAddress:'Korea',
-      EmployerPhone:'1234123',
-      EmploymentStatus:'Retired',
-      EmergencyName: "Jocelyn S. Senorin",
-      RelationshipToPatient: "Mother",
-      EmergencyCellphone:'12345678900',
-      EmergencyWorkphone:'9876543211',
-      EmergencyDateOfBirth: new Date('03-24-1973'),
+  PatientID: Math.floor(Math.random() * 10000),
+  Prefix: "Ms.",
+  PatientName: "Senorin, Sheen S.",
+  PreviousNames: "Alice March",
+  EmailAddress: "sheen@gmail.com",
+  MailingAddress:"5209 Kawit, Gloria, Oriental Mindoro",
+  MaritalStatus:'Single',
+  Gender: "Female",
+  CellPhone: "911234567",
+  HomeAddress:"5209 Kawit, Gloria, Oriental Mindoro",
+  ResidenceType:"Private Home",
+  PrimaryCarePhysician:"Dr. Kim Taehyung",
+  DateOfBirth: '2001-03-21',
+  SSN:'123123423',
+  HomePhone:'1234123',
+  WorkPhone:"1234123",
+  PreferredContact:"Home",
+  StudentStatus:'Full-time',
+  EmployerName:'Kim Taehyung',
+  EmployerAddress:'Korea',
+  EmployerPhone:'1234123',
+  EmploymentStatus:'Retired',
+  EmergencyName: "Jocelyn S. Senorin",
+  RelationshipToPatient: "Mother",
+  EmergencyCellphone:'12345678900',
+  EmergencyWorkphone:'9876543211',
+  EmergencyDateOfBirth: new Date('03-24-1973'),
 
-      InsuranceID: Math.floor(Math.random() * 10000),
-      InsuranceCompanyName:'HYBE Insurances',
-      SubscriberNo:'10000',
-      GroupNo:'20000',
-      PolicyHolderName:'Jocelyn S. Senorin',
-      SameAsPatient:false,
-      InsuranceName:'Jocelyn S. Senorin',
-      InsuranceDateOfBirth: '1973-03-24',
-      InsuranceSSN:'2134567890',
-      InsuranceTelephone:'5678904321',
-      InsuranceGender:'Female',
-      InsuranceHomeAddress:"5209 Kawit, Gloria, Oriental Mindoro",
-      InsuranceEmployer:'Kim Namjoon',
-      PatientRelationshipToInsired:'Daughter'
-   
+  InsuranceID: [],
+  InsuranceCompanyName: ['HYBE Insurances'],
+  SubscriberNo: ['10000'],
+  GroupNo: ['20000'],
+  PolicyHolderName: ['Jocelyn S. Senorin'],
+  SameAsPatient: ['False'],
+  InsuranceName: ['Jocelyn S. Senorin'],
+  InsuranceDateOfBirth: ['1973-03-24'],
+  InsuranceSSN: ['2134567890'],
+  InsuranceTelephone: ['5678904321'],
+  InsuranceGender: ['Female'],
+  InsuranceHomeAddress: ["5209 Kawit, Gloria, Oriental Mindoro"],
+  InsuranceEmployer: ['Kim Namjoon'],
+  PatientRelationshipToInsured: [''],
 };
+
 
 export const prefixOptions = [ // Corrected variable name to prefixOptions
         { label: 'Mr.', value: 'Mr.' },
@@ -105,8 +105,8 @@ export const prefixOptions = [ // Corrected variable name to prefixOptions
     ];
     
     const isPatientOptions = [
-      { option: 'True' },
-      { option: 'False' }
+      { option: 'False' },
+      { option: 'True' }
     ];
     
     
