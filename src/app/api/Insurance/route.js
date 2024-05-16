@@ -14,13 +14,46 @@ export async function POST(req) {
     // Iterate over each patient object
     const responses = await Promise.all(formDataArray.map(async (data) => {
       // Extract values from each patient object up to EmploymentStatus
-      const relevantValues = Object.values(data).slice(TOSLICE, -1);
       const keys = Object.keys(data).slice(TOSLICE, -1).join(', ');
-      console.log('relevantValues:', relevantValues, 'keys:', keys, Object.values(data).length - TOSLICE);
-      console.log('Insurance', relevantValues, keys);
+      // const relevantValues = Object.values(data).map(async (value) =>{}).slice(TOSLICE, -1);
+      // Create an array to hold the single value objects
+      const objects = [];
+
+      // Iterate over each key-value pair in the original object
+      const maxItems = Math.max(...Object.values(data).filter(Array.isArray).map(arr => arr.length));
+
+    // Iterate up to the maximum number of items
+    for (let i = 0; i < maxItems; i++) {
+        const obj = {};
+        // Iterate over the entries of the data object
+        for (const [key, value] of Object.entries(data)) {
+            if (key === 'SameAsPatient') {
+                if (Array.isArray(value)) {
+                    const currentValue = value[i];
+                    console.log('SameAsPatient', currentValue, currentValue === 'True');
+                    obj[key] = currentValue === 'True' ? 1 : 0;
+                }
+            } else {
+                obj[key] = Array.isArray(value) ? value[i] : value;
+            }
+        }
+        // Push the created object into the array
+        objects.push(obj);
+    }
+    
+      
+
+
+      // Log the single value objects
+      objects.forEach(obj => {
+        const relevantValues = Object.values(obj).slice(TOSLICE, -1);
+        console.log('Insurance', relevantValues, keys);
+        // Assuming createItem returns a promise, await its execution
+        return createItem(relevantValues, keys, table, (Object.values(data).length - TOSLICE) - 1);
+      });
 
       // Create a patient for each formData entry
-      return createItem(relevantValues, keys, table, (Object.values(data).length - TOSLICE)-1);
+      // return createItem(relevantValues, keys, table, (Object.values(data).length - TOSLICE)-1);
     }));
 
     // Return an array of responses
