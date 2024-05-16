@@ -15,8 +15,6 @@ export async function POST(req) {
     const responses = await Promise.all(formDataArray.map(async (data) => {
       // Extract values from each patient object up to EmploymentStatus
       const keys = Object.keys(data).slice(TOSLICE, -1).join(', ');
-      // const relevantValues = Object.values(data).map(async (value) =>{}).slice(TOSLICE, -1);
-      // Create an array to hold the single value objects
       const objects = [];
 
       // Iterate over each key-value pair in the original object
@@ -40,10 +38,6 @@ export async function POST(req) {
         // Push the created object into the array
         objects.push(obj);
     }
-    
-      
-
-
       // Log the single value objects
       objects.forEach(obj => {
         const relevantValues = Object.values(obj).slice(TOSLICE, -1);
@@ -51,9 +45,6 @@ export async function POST(req) {
         // Assuming createItem returns a promise, await its execution
         return createItem(relevantValues, keys, table, (Object.values(data).length - TOSLICE) - 1);
       });
-
-      // Create a patient for each formData entry
-      // return createItem(relevantValues, keys, table, (Object.values(data).length - TOSLICE)-1);
     }));
 
     // Return an array of responses
