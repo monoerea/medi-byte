@@ -114,4 +114,27 @@ export async function deleteItem(id, table) {
   }
 }
 
+// Generate a random ID
+export const getRandomId = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let randomId = '';
+  for (let i = 0; i < 5; i++) {
+    randomId += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  randomId += Math.floor(Math.random() * 1000);
+  return randomId;
+};
+
+// Fetch raw data from multiple endpoints
+export const fetchRawDataFromServer = async (endpoints) => {
+  try {
+    console.log('Fetching data from tables:', endpoints);
+    const rawData = await Promise.all(endpoints.map(table => getItems(table)));
+    // console.log('Raw data received:', rawData);
+    return rawData;
+  } catch (error) {
+    console.error('Error fetching raw data:', error);
+    throw error;
+  }
+};
 
