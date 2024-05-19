@@ -26,10 +26,13 @@ export const computeDistGender = async (data) => {
         'Female': 0,
         'Transgender': 0,
     };
-
+    
+    const key = Object.keys(data.patients[0]).find((key)=> {return key.includes('Gender')})
+    console.log('KEY',key);
     data.patients.forEach(patient => {
-        if (genderCounts[patient.Gender] !== undefined) {
-            genderCounts[patient.Gender]++;
+        
+        if (genderCounts[patient[key]] !== undefined) {
+            genderCounts[patient[key]]++;
         }
     });
     return genderCounts;

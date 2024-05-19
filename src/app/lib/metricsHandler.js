@@ -3,32 +3,37 @@ import { computeAverageAge } from './computeAverage.js';
 
 // Define a function to get the total length of data
 export const getTotalLength = async (data) => {
-    return data.length;
+    const length = data.length;
+    return { type: 'total', result: length };
 };
 
 // Define a function to handle average age computation
 export const handleAverage = async (data) => {
     if (data.req === 'age') {
-        return await computeAverageAge(data.patients);
+        const averageAge = await computeAverageAge(data.patients);
+        return { type: 'average', req: 'age', result: averageAge };
     }
 };
 
 // Define a function to handle distribution computation
 export const handleDistribution = async (data) => {
     if (data.req === 'age') {
-        return await computeDistAge(data);
+        const ageDistribution = await computeDistAge(data);
+        return { type: 'distribution', req: 'age', result: ageDistribution };
     }
     if (data.req === 'gender') {
-        return await computeDistGender(data);
+        const genderDistribution = await computeDistGender(data);
+        return { type: 'distribution', req: 'gender', result: genderDistribution };
     }
     if (data.req === 'marital') {
-        return await computeDistMarital(data);
+        const maritalDistribution = await computeDistMarital(data);
+        return { type: 'distribution', req: 'marital', result: maritalDistribution };
     }
 };
 
 // Define a function to handle data based on its type
 export const handler = async (data) => {
-    console.log('Passed Data:',Object.keys(data), data.type, data.req, data.patients.length);
+    console.log('Passed Data:', Object.keys(data), data.type, data.req, data.patients.length);
     switch (data.type) {
         case 'total':
             return await getTotalLength(data.patients);

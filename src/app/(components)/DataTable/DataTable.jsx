@@ -136,7 +136,7 @@ const DataTable = ({ items, table }) => {
   
 
   return (
-    <div className="max-w-full mx-auto max-h-screen overflow-x-scroll">
+    <div className="max-w-full mx-auto max-h-80 overflow-x-scroll">
       <table className="w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
