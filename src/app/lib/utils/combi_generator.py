@@ -1,0 +1,57 @@
+import random
+import string
+import pandas as pd
+
+# Read the CSV files
+insurance_df = pd.read_csv('medi-byte/src/app/lib/utils/Insurance.csv')
+patient_df = pd.read_csv('medi-byte/src/app/lib/utils/Patient.csv')
+
+# Extract IDs
+insurance_ids = insurance_df['InsuranceID'].astype(str).tolist()
+patient_ids = patient_df['PatientID'].astype(str).tolist()
+
+# Shuffle the lists
+random.shuffle(patient_ids)
+random.shuffle(insurance_ids)
+
+# Initialize variables
+combinations = []
+id_count = {pid: 0 for pid in patient_ids + insurance_ids}  # Initialize all IDs
+max_usage = 5
+
+# Define ULID generator function
+def generate_ulid():
+    timestamp = int(round(random.uniform(0, 0xFFFFFFFFFFFF)))
+    entropy = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+    return f"{timestamp:012X}{entropy}"
+
+# Ensure at least one usage of each ID
+for patient_id, insurance_id in zip(patient_ids, insurance_ids):
+    ulid = generate_ulid()
+    combinations.append((ulid,patient_id.upper(), insurance_id.upper()))
+    id_count[patient_id] += 1
+    id_count[insurance_id] += 1
+
+# Generate additional combinations
+while len(combinations) < 150:
+    # Shuffle IDs again
+    random.shuffle(patient_ids)
+    random.shuffle(insurance_ids)
+    
+    for patient_id, insurance_id in zip(patient_ids, insurance_ids):
+        if id_count[patient_id] < max_usage and id_count[insurance_id] < max_usage:
+            ulid = generate_ulid()
+            combinations.append((ulid,patient_id.upper(), insurance_id.upper()))
+            id_count[patient_id] += 1
+            id_count[insurance_id] += 1
+            break
+
+# Print combinations
+for combination in combinations:
+    print(combination,',')
+print(len(combinations))
+
+df = pd.DataFrame(combinations, columns=['ULID','PatientID', 'InsuranceID'])
+
+# Save DataFrame to CSV
+df.to_csv('combinations.csv', index=False)
