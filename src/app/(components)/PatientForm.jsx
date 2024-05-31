@@ -81,6 +81,7 @@ const PatientForm = () => {
             try {
                 await createObject(formData,'Patient');
                 await createObject(formData,'Insurance');
+                await createObject(formData, 'PatientInsurance');
                 router.refresh();
                 router.push("/");
             } catch (error) {
