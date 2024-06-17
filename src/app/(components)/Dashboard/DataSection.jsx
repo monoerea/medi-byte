@@ -34,7 +34,7 @@ function DataSection() {
     console.log('DATA', data);
     const chartType = ['Percent', 'Pie', 'Pie'];
     return (
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3 text-center">
             { data && data.cards.map((card) => (
                 <DataCard key={card.cardId} card={card} chartType={chartType[data.cards.indexOf(card)]} />
             ))}

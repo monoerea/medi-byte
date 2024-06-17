@@ -5,7 +5,7 @@ import { faMoneyBill, faPerson, faCog } from '@fortawesome/free-solid-svg-icons'
 export const itemList = [
   { icon: <faPerson className="w-6 h-6 mr-2" />, label: 'Patient' },
   { icon: <faMoneyBill className="w-6 h-6 mr-2" />, label: 'Insurance' },
-  { icon: <faCog className="w-6 h-6 mr-2" />, label: 'Settings' },
+  { icon: <faCog className="w-6 h-6 mr-2" />, label: 'PatientInsurance' },
 ];
 
 

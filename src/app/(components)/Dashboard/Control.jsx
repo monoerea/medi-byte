@@ -41,6 +41,12 @@ const Dashboard = () => {
           // Set insurance data in state or handle it as needed
           console.log('Fetched insurances:', insuranceData);
         }
+        else if (item === 'PatientInsurance') {
+          const PatientInsuranceData = await getItems('PatientInsurance');
+          setItems(PatientInsuranceData);
+          // Set insurance data in state or handle it as needed
+          console.log('Fetched insurances:', PatientInsuranceData);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -52,10 +58,8 @@ const Dashboard = () => {
           <SideMenu items={itemList} toggleCollapsed={toggleCollapsed} onLinkClick={handleLinkClick} />
         </div>
         {/* min-h-[calc(100vh-84px)] */}
-        <div className="overflow-auto max-w-screen min-h-[calc(100vh-500px)]">
+        <div className="overflow-auto min-h-[calc(100vh-500px)] flex-grow">
 
-
-          
           <DataSection/>
 
           {selectedItem && items && <ControlPage item={items} table={selectedItem} />}

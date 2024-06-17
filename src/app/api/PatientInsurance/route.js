@@ -9,15 +9,11 @@ export async function POST(req) {
     const formData = await req.json();
     const keys = ['PatientInsuranceID', 'PatientID', 'InsuranceID'];
     const TOSLICE = 3;
-
+    console.log('PI:', formData);
     const responses = await Promise.all(Object.values(formData).flatMap(async (data) => {
       if (Array.isArray(data['InsuranceID'])) {
         return await Promise.all(data['InsuranceID'].map(async (element) => {
-          return createItem({
-            'PatientInsuranceID': getRandomId(),
-            'PatientID': data.PatientID,
-            'InsuranceID': element
-          }, keys, table, TOSLICE);
+          return createItem([data.PatientID, getRandomId(), element], keys, table, TOSLICE);
         }));
       }
     }));

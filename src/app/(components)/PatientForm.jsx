@@ -108,6 +108,7 @@ const PatientForm = () => {
                             Add Form
                         </button>
                         {renderMultiForm()}
+                       {/*  TODO: ADD DIVIDER*/}
                     </div>
                 )}
                 

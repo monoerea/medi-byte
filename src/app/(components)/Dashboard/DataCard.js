@@ -35,6 +35,33 @@ export const DataCard = ({ card, chartType }) => {
         return <p>{result}</p>;
     };
 
+    const options = { 
+        plugins: {
+          tooltip: {
+            titleFont: {
+              size: 10
+            },
+            bodyFont: {
+              size: 10
+            },
+         },
+        legend: {
+          display: false,
+          responsive: true,
+          position: "right",
+          labels: {
+            boxWidth: 10,
+            padding: 7,
+            font: {
+              size: 10
+            },
+            color: "white",
+          },
+          align: "right",
+        },
+      }
+    }
+
     const createChartData = (result) => {
         return {
             labels: Object.keys(result),
@@ -73,7 +100,7 @@ export const DataCard = ({ card, chartType }) => {
     
         return (
             <div className="w-28 h-28">
-                <ChartComponent  data={chartData} />
+                <ChartComponent  options = {options} data={chartData} />
                 {/* height={'40px'} width={'40px'} */}
             </div>
         );
@@ -82,9 +109,9 @@ export const DataCard = ({ card, chartType }) => {
 
     return (
         <Card>
-            <div className="flex items-center justify-start mb-1">
-                <div>
-                    <label className="block text-sm font-semibold mb-1 text-center">{card.data.req}</label>
+            <div className="items-center mb-1">
+                <label className="block text-sm font-semibold mb-1 text-center">{card.data.req.toUpperCase()}</label>
+                <div className=' flex justify-around'>
                     <div className='text-center'>
                         {isLoading ? (
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-900"></div>
@@ -92,8 +119,11 @@ export const DataCard = ({ card, chartType }) => {
                             renderContent()
                         )}
                     </div>
-                    
+                    <div className='p-5'>
+                        <p>Lorem ipsum etc.</p>
+                    </div>
                 </div>
+                
             </div>
         </Card>
     );
