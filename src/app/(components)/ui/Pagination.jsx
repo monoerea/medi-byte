@@ -22,7 +22,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, showEntries, totalE
   const endEntry = Math.min(currentPage * showEntries, totalEntries);
 
   return (
-    <div className="flex justify-between items-center mt-4 text-gray-500">
+    <div className="flex justify-between items-center text-gray-500">
       <div>
         Showing {startEntry} to {endEntry} of {totalEntries} entries
       </div>

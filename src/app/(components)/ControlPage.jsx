@@ -59,7 +59,7 @@ const ControlPage = ({item, table}) => {
     };
 
     return (
-        <div className="bg-gray-100 p-4 rounded-lg max-w-screen-l mx-auto min-h-[calc(100vh-225px)]">
+        <div className="bg-gray-100 p-4 rounded-lg max-w-screen-l mx-auto min-h-[calc(100vh-290px)]">
             <div className="flex justify-between items-center mb-4">
                 <SearchBar onSearch={handleSearch} />
                 <div className="text-gray-500"> {/* Apply text-gray-500 for gray color */}

@@ -137,4 +137,3 @@ export const fetchRawDataFromServer = async (endpoints) => {
     throw error;
   }
 };
-

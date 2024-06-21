@@ -1,44 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import { DataCard } from './DataCard';
+import { type } from 'os';
 
 function DataSection() {
-    const [data, setData] = useState({ sectionId: '', cards: [] });
+    const [data, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true); // Track overall loading state
 
     useEffect(() => {
         fetchData();
     }, []);
 
     const fetchData = async () => {
+        setIsLoading(true); // Start loading
         try {
-            const response = await fetch('/api/DataAnalysis', {
+            // Fetch data from first endpoint
+            const response1 = await fetch('/api/DataAnalysis', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    endpoints: ['Patient', 'Insurance', 'Patient'],
-                    sectionMappings: {
-                        1: { type: 'distribution', req: 'age' },
-                        2: { type: 'distribution', req: 'gender' },
-                        3: { type: 'average', req: 'age' },
-                    }
+                    sectionMappings: [
+                    { type: 'distribution', req: 'insured', chartType: 'pie'},
+                    { type: 'average', req: 'age', chartType: 'doughnut' },
+                    {type: 'frequency', req: 'company', chartType: 'bar'}
+                    ]
                 })
             });
-            const jsonData = await response.json();
-            setData(jsonData);
+    
+            if (response1.ok) {
+                const data = await response1.json();
+                setData([{...data}]);
+            } else {
+                console.error('Failed to fetch data from /api/DataAnalysis');
+            }
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching data from /api/DataAnalysis:', error);
+        }
+        finally {
+            setIsLoading(false); // Finish loading regardless of success or failure
         }
     };
 
     console.log('DATA', data);
-    const chartType = ['Percent', 'Pie', 'Pie'];
+    
     return (
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3 text-center">
-            { data && data.cards.map((card) => (
-                <DataCard key={card.cardId} card={card} chartType={chartType[data.cards.indexOf(card)]} />
-            ))}
-        </div>
+        <div className="overflow-x-auto whitespace-nowrap">
+        {!isLoading ? (
+            <div className="grid grid-flow-col auto-cols-max gap-4 p-1">
+                {data.map((sectionData, index) => (
+                    <div key={`section-${index}`} className="grid grid-flow-col auto-cols-max gap-1 align-middle">
+                        {sectionData.cards.map((card, cardIndex) => (
+                            <DataCard key={card.cardId} card={card} />
+                        ))}
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <p>Loading...</p>
+        )}
+    </div>
+
     );
 }
 

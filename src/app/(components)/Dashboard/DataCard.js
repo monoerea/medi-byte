@@ -1,86 +1,70 @@
 import Card from '../ui/Card';
 import React, { useState, useEffect } from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut, Bar, Line } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, PieController } from "chart.js";
+import { Doughnut, Bar, Line, Pie } from 'react-chartjs-2';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, PieController);
 
-export const DataCard = ({ card, chartType }) => {
+export const DataCard = ({ card }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Set isLoading to true if card.sectionID is empty when component mounts
         console.log('CHECKER',!(card.sectionID === ''))
         if (!(card.sectionID === '')) {
             setIsLoading(false);
         }
     }, [card]);
 
-    const renderContent = () => {
-        const { type, result } = card.data;
-
-        if (type === 'average') {
-            return renderAverage(result);
-        }
-
-        if (type === 'distribution' && typeof result === 'object') {
-            const chartData = createChartData(result);
-            return renderChart(chartData, chartType);
-        }
-
-        return <p>No data available</p>;
-    };
-
-    const renderAverage = (result) => {
-        return <p>{result}</p>;
-    };
-
-    const options = { 
-        plugins: {
-          tooltip: {
-            titleFont: {
-              size: 10
-            },
-            bodyFont: {
-              size: 10
-            },
-         },
-        legend: {
-          display: false,
-          responsive: true,
-          position: "right",
-          labels: {
-            boxWidth: 10,
-            padding: 7,
-            font: {
-              size: 10
-            },
-            color: "white",
-          },
-          align: "right",
-        },
-      }
-    }
-
-    const createChartData = (result) => {
-        return {
-            labels: Object.keys(result),
-            datasets: [
-                {
-                    data: Object.values(result),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.5)',
-                        'rgba(54, 162, 235, 0.5)',
-                        'rgba(255, 206, 86, 0.5)',
-                        // Add more colors as needed
-                    ],
-                    borderWidth: 1,
+    const getChartOptions = (chartType) => {
+        const baseOptions = { 
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    titleFont: {
+                        size: 10
+                    },
+                    bodyFont: {
+                        size: 10,
+                        color: 'white'
+                    },
                 },
-            ],
+                legend: {
+                    display: true,
+                    position: "right",
+                    labels: {
+                        boxWidth: 10,
+                        padding: 7,
+                        font: {
+                            size: 10,
+                            color: "white", // Change the font color here
+                        },
+                        color: "white", // Change the color of the legend text
+                    },
+                    align: "right",
+                },
+            }
         };
+    
+        if (chartType === 'bar') {
+            baseOptions.scales = {
+                x: {
+                    ticks: {
+                        color: 'white' // Change the color of the x-axis labels
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: 'white' // Change the color of the y-axis labels
+                    }
+                }
+            };
+        }
+    
+        return baseOptions;
     };
 
-    const renderChart = (chartData, chartType) => {
+    const renderChart = (chartData, chartType, options) => {
         let ChartComponent;
     
         switch (chartType) {
@@ -93,34 +77,36 @@ export const DataCard = ({ card, chartType }) => {
             case 'line':
                 ChartComponent = Line;
                 break;
+            case 'pie':
+                ChartComponent = Pie;
+                break;
             default:
                 ChartComponent = Doughnut;
                 break;
         }
+
+        const option = getChartOptions(chartType);
     
         return (
-            <div className="w-28 h-28">
-                <ChartComponent  options = {options} data={chartData} />
-                {/* height={'40px'} width={'40px'} */}
+            <div className="h-40 w-full">
+                <ChartComponent options={option} data={chartData} />
             </div>
         );
     };
     
+    
 
     return (
         <Card>
-            <div className="items-center mb-1">
-                <label className="block text-sm font-semibold mb-1 text-center">{card.data.req.toUpperCase()}</label>
+            <div className="items-center mb-1  bg-slate-500 border-r-slate-500 rounded-md  p-5 max-h-50  hover:bg-gray-700">
+                <label className="block text-sm font-semibold mb-1 text-center">{card.data.req.toUpperCase() +' '+ card.data.type.toUpperCase() }</label>
                 <div className=' flex justify-around'>
                     <div className='text-center'>
                         {isLoading ? (
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-900"></div>
+                            <div className="animate-spin rounded-full border-b-2 border-blue-900 "></div>
                         ) : (
-                            renderContent()
+                            renderChart(card.data.result, card.data.chartType)
                         )}
-                    </div>
-                    <div className='p-5'>
-                        <p>Lorem ipsum etc.</p>
                     </div>
                 </div>
                 

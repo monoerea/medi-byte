@@ -13,7 +13,7 @@ const Nav = () => {
         { name:'Dashboard', icon: faChartSimple, link:'/Dashboard/1'}
     ];
     return (
-        <nav className="flex justify-between items-center bg-nav p-4">
+        <nav className="flex justify-between items-center bg-nav pr-4 pl-4">
             
             <div className="flex justify-between items-center font-bold">
             <div className="pr-8">

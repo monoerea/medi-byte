@@ -1,5 +1,5 @@
 // Define the cleaner function with different cleaning routines based on options
-export const cleaner = async (data, options) => {
+export const cleaner = async (data) => {
     const cleanedData = data.filter(item => {
         for (const key in item) {
             if (item[key] === null) {
@@ -8,15 +8,6 @@ export const cleaner = async (data, options) => {
         }
         return true; // Include the object if all attributes are not null
     });
-
-    // Apply cleaning routine based on options.type
-    switch (options.type) {
-        case 'distribution':
-            // Additional cleaning logic for distribution can be added here
-            break;
-        default:
-            break;
-    }
     
     return cleanedData;
 };

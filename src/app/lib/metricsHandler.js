@@ -3,8 +3,11 @@ import { computeAverageAge } from './computeAverage.js';
 
 // Define a function to get the total length of data
 export const getTotalLength = async (data) => {
-    const length = data.length;
-    return { type: 'total', result: length };
+    if (data.req === 'age'){
+        const length = data.patients.length;
+    return { type: 'total', req: 'age', result: length };
+    }
+    
 };
 
 // Define a function to handle average age computation
@@ -31,12 +34,19 @@ export const handleDistribution = async (data) => {
     }
 };
 
+export const handleFrequency = async (data) => {
+    if (data.req === 'company'){
+        const companyFreq = await getCompanyFreq(data);
+        return companyFreq;
+    }
+}
+
 // Define a function to handle data based on its type
 export const handler = async (data) => {
     console.log('Passed Data:', Object.keys(data), data.type, data.req, data.patients.length);
     switch (data.type) {
         case 'total':
-            return await getTotalLength(data.patients);
+            return await getTotalLength(data);
         case 'distribution':
             return await handleDistribution(data);
         case 'average':
