@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import {getCompanyFreq} from './sql';
 import {prepareGroupedBarChartData} from '../../lib/utils';
 import { handler } from './handler';
+import { query } from '../../lib/db';
 
 export async function  GET(){
     try {
@@ -21,26 +22,40 @@ export async function  GET(){
     }
 }
 
+const dataAnalysis = async(body) =>{
+    const cards = await Promise.all(Object.keys(body.sectionMappings).map(async key => {
+        const sectionRequest = body.sectionMappings[key];
+        console.log('Section Request:', sectionRequest);
+
+        const result = await handler(sectionRequest);
+        console.log('RESULT', result);
+
+        return { cardId: getRandomId(), data: {result, ...sectionRequest} };
+    }));
+    return cards
+}
+
 export async function POST(req, res) {
     try {
         console.log('POST request received:', req.url);
         const body = await req.json();
         console.log('BODY', body);
 
-        // Process each sectionMapping asynchronously
-        const cards = await Promise.all(Object.keys(body.sectionMappings).map(async key => {
-            const sectionRequest = body.sectionMappings[key];
-            console.log('Section Request:', sectionRequest);
-
-            const result = await handler(sectionRequest);
-            console.log('RESULT', result);
-
-            return { cardId: getRandomId(), data: {result, ...sectionRequest} };
-        }));
-        console.log('CARDS', cards);
-
-        // Send response with cards and a unique sectionId using NextResponse
-        return NextResponse.json({ sectionId: getRandomId(), cards }, { status: 200 });
+        if (Object.keys(body).includes('sectionMappings')){
+            const cards = await dataAnalysis(body);
+            console.log('CARDS', cards);
+            return NextResponse.json({ sectionId: getRandomId(), cards }, { status: 200 });
+        }
+        
+        if (Object.keys(body).includes('query')) {
+            console.log(body.query);
+            const searchQuery = body.query
+            const result = await query({
+                query:`${searchQuery}`
+            });
+            return NextResponse.json(result, { status: 200 });
+        }
+        return NextResponse.json('Some error occured');
     } catch (error) {
         console.error('Error processing data:', error);
         // Handle errors and return an appropriate response using NextResponse

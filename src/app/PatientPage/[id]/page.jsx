@@ -8,9 +8,9 @@ const PatientPage = ({ params }) => {
 
   return (
     <div>
-      <div>
+      {/* <div>
         PatientPage {params.id}
-      </div>
+      </div> */}
       <FormDataProvider>
         <PatientForm/>
       </FormDataProvider>

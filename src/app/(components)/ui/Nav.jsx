@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPerson, faSearch, faEnvelope, faHome, faChartSimple } from '@fortawesome/free-solid-svg-icons';
+import { faPerson, faSearch, faEnvelope, faHome, faChartSimple, faSimCard } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import Image from 'next/image';
 import Percentage from './Percentage';
@@ -10,7 +10,8 @@ const Nav = () => {
     const navItems = [
         { name: "Home", icon: faHome, link: "/" },
         { name: "Patient", icon: faPerson, link: "/PatientPage/1" },
-        { name:'Dashboard', icon: faChartSimple, link:'/Dashboard/1'}
+        { name:'Dashboard', icon: faChartSimple, link:'/Dashboard/1'},
+        { name:'Simulation', icon: faSimCard, link:'/Simulation/1'}
     ];
     return (
         <nav className="flex justify-between items-center bg-nav pr-4 pl-4">
