@@ -23,7 +23,9 @@ function DataSection() {
                     sectionMappings: [
                     { type: 'distribution', req: 'insured', chartType: 'pie'},
                     { type: 'average', req: 'age', chartType: 'doughnut' },
-                    {type: 'frequency', req: 'company', chartType: 'bar'}
+                    {type: 'frequency', req: 'company', chartType: 'bar'},
+                    { type: 'distribution', req: 'age', chartType: 'pie'},
+                    { type: 'distribution', req: 'gender', chartType: 'pie'},
                     ]
                 })
             });
@@ -45,19 +47,19 @@ function DataSection() {
     console.log('DATA', data);
     
     return (
-        <div className="overflow-x-auto whitespace-nowrap">
+        <div className="overflow-x-auto bg-slate-700">
         {!isLoading ? (
-            <div className="grid grid-flow-col auto-cols-max gap-4 p-1">
+            <div className="grid grid-flow-col auto-cols-max p-1">
                 {data.map((sectionData, index) => (
-                    <div key={`section-${index}`} className="grid grid-flow-col auto-cols-max gap-1 align-middle">
-                        {sectionData.cards.map((card, cardIndex) => (
+                    <div key={`section-${index}`} className="grid grid-flow-col auto-cols-max overflow-x-auto gap-2">
+                        {sectionData.cards.map((card) => (
                             <DataCard key={card.cardId} card={card} />
                         ))}
                     </div>
                 ))}
             </div>
         ) : (
-            <p>Loading...</p>
+            <p className="flex text-center p-5">Loading...</p>
         )}
     </div>
 

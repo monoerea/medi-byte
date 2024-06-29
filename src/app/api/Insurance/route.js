@@ -14,7 +14,14 @@ export async function POST(req) {
     // Iterate over each patient object
     const responses = await Promise.all(formDataArray.map(async (data) => {
       // Extract values from each patient object up to EmploymentStatus
-      const keys = Object.keys(data).slice(TOSLICE, -1).join(', ');
+      const items = Object.keys(data).slice(TOSLICE, -1);
+      const keys = items.map((item, index) => {
+        if (index > 3 && item.startsWith('Insurance') && !(item.includes('InsuranceName'))) {
+          return item.replace('Insurance', '');
+        }
+        return item;
+      }).join(', ');
+      console.log('KEYS', keys);
       const objects = [];
 
       // Iterate over each key-value pair in the original object

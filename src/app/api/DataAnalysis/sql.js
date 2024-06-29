@@ -43,6 +43,39 @@ export const getAgeDistributionbyGender = async() =>{
     }
 }
 
+export const getAgeDistributionCount = async() =>{
+    try{
+        const result = await query({
+            query:` SELECT COUNT(p.PatientID) as value, YEAR(CURDATE()) - YEAR(p.DateofBirth) as label
+                    FROM patient p
+                    JOIN patientinsurance pi ON p.PatientID = pi.PatientID
+                    JOIN insurance i ON i.InsuranceID = pi.InsuranceID
+                    WHERE YEAR(i.DateofBirth) > 1947
+                    GROUP BY label
+                    HAVING value > 3
+                    ORDER BY value DESC;`
+        })
+        return result;
+    } catch (error){
+        console.error('Database query error:', error);
+        return { error: 'Internal server error' };
+    }
+}
+
+export const getGenderDistribution = async() =>{
+    try{
+        const result = await query({
+            query:` SELECT COUNT(*)as value, Gender as label
+                    FROM patient
+                    GROUP BY label;`
+        })
+        return result;
+    } catch (error){
+        console.error('Database query error:', error);
+        return { error: 'Internal server error' };
+    }
+}
+
 export const getSelfInsured = async() => {
     try{
         const result = await query({

@@ -1,4 +1,4 @@
-import {getAgeDistributionbyGender, getSelfInsured, getCompanyFreq} from './sql';
+import {getAgeDistributionbyGender, getSelfInsured, getCompanyFreq, getAgeDistributionCount, getGenderDistribution} from './sql';
 import {prepareGroupedBarChartData, transform} from '../../lib/utils.js';
 
 export const handler = async(data) =>{
@@ -30,6 +30,14 @@ const computeDistribution = async(data) =>{
             const result = transform(await getSelfInsured(), data.chartType);
             console.log(result);
             return result;
+        case 'age':
+            const res = transform(await getAgeDistributionCount(), data.chartType);
+            console.log(res);
+            return res;
+        case 'gender':
+            const results = transform(await getGenderDistribution(), data.chartType);
+            console.log(results);
+            return results;
     }
 }
 

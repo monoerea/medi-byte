@@ -8,7 +8,7 @@ export const validateName = (name) => {
 
 // Validate cell phone function: returns true if the cell phone contains only digits and dashes
 export const validateCellPhone = (cellPhone) => {
-  return /^\d{11}$/.test(cellPhone);
+  return /^\d{9}$/.test(cellPhone);
 };
 
 // Validate middle initial function: returns true if the input matches the pattern of a single character followed by a period (.)
@@ -116,13 +116,7 @@ export async function deleteItem(id, table) {
 
 // Generate a random ID
 export const getRandomId = () => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  let randomId = '';
-  for (let i = 0; i < 5; i++) {
-    randomId += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  randomId += Math.floor(Math.random() * 1000);
-  return randomId;
+  return Math.floor(Math.random() * 10000);;
 };
 
 // Fetch raw data from multiple endpoints

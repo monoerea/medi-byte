@@ -45,24 +45,29 @@ const PatientForm = () => {
         return add.map((_, index) => {
             console.log('Index in renderMultiForm:', index);
             return (
-                <DynamicForm
-                    key={index}
-                    index={index} // Increment the index by 1
-                    fields={steps[1]} // Assuming you want to use the same fields for the additional forms
-                    formData={formData} // Pass the entire formData object
-                    handleFormDataChange={(id, value) => {
-                        // Check if the field belongs to insurance data based on the id
-                        const isInsuranceField = Object.keys(formData).indexOf(id) > Object.keys(formData).indexOf('InsuranceID');
-                        console.log(`isInsuranceField for index ${index}:`, isInsuranceField, Object.keys(formData).indexOf(id), Object.keys(formData).indexOf('InsuranceID')); // Log the isInsuranceField value                    
-    
-                        // Call handleFormDataChange with the provided index
-                        handleFormDataChange(id, value, index);
-
-                    }}
-                />
+                <div key={index}>
+                    <DynamicForm
+                        index={index} // Increment the index by 1
+                        fields={steps[1]} // Assuming you want to use the same fields for the additional forms
+                        formData={formData} // Pass the entire formData object
+                        handleFormDataChange={(id, value) => {
+                            // Check if the field belongs to insurance data based on the id
+                            const isInsuranceField = Object.keys(formData).indexOf(id) > Object.keys(formData).indexOf('InsuranceID');
+                            console.log(`isInsuranceField for index ${index}:`, isInsuranceField, Object.keys(formData).indexOf(id), Object.keys(formData).indexOf('InsuranceID')); // Log the isInsuranceField value                        
+        
+                            // Call handleFormDataChange with the provided index
+                            handleFormDataChange(id, value, index);
+                        }}
+                    />
+                    {index < add.length - 1 && (
+                        <hr className="my-12 h-px border-t-0 bg-gradient-to-r from-transparent via-blue-700 to-transparent" style={{ backgroundImage: 'linear-gradient(to right, transparent, blue, transparent)', opacity: 0.7 }} />
+                    )} {/* Add a divider except after the last form */}
+                </div>
             );
         });
     };
+    
+    
     
     
     const handleSubmit = async (event) => {

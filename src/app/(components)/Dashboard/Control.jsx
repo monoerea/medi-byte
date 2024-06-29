@@ -54,7 +54,7 @@ const Dashboard = () => {
   
     return (
       <div className="flex flex-row max-w-screen-2xl">
-        <div className={`text-gray-700 ${collapsed ? 'w-16' : 'w-64'}`}>
+        <div className={`text-gray-700 bg-gray-900 ${collapsed ? 'w-16' : 'w-64'}`}>
           <SideMenu items={itemList} toggleCollapsed={toggleCollapsed} onLinkClick={handleLinkClick} />
         </div>
         {/* min-h-[calc(100vh-84px)] */}

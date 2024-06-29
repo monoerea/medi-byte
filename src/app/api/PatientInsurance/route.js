@@ -13,7 +13,8 @@ export async function POST(req) {
     const responses = await Promise.all(Object.values(formData).flatMap(async (data) => {
       if (Array.isArray(data['InsuranceID'])) {
         return await Promise.all(data['InsuranceID'].map(async (element) => {
-          return createItem([data.PatientID, getRandomId(), element], keys, table, TOSLICE);
+          console.log(getRandomId(),data.PatientID, element)
+          return createItem([getRandomId(),data.PatientID, element], keys, table, TOSLICE);
         }));
       }
     }));

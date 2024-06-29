@@ -15,7 +15,7 @@ const SideMenu = ({ items, toggleCollapsed, onLinkClick }) => {
   };
 
   return (
-    <div className={`bg-gray-900 text-white h-full flex flex-col ${collapsed ? 'w-16' : 'w-64'}`}>
+    <div className={`bg-gray-900 text-white flex flex-col ${collapsed ? 'w-16' : 'w-64'}`}>
       <div className="p-4 flex items-center justify-between">
         {!collapsed && <h2 className="text-xl font-bold">Menu</h2>}
         <button onClick={toggleMenu} className="focus:outline-none">

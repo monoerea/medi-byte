@@ -8,12 +8,12 @@ const SearchBar = ({ onSearch }) => {
   const handleChange = (event) => {
     console.log(event.target.value);
     setQuery(event.target.value);
-    onSearch(event.target.value); // Ensure onSearch prop is invoked with the query
+    onSearch(String(event.target.value)); // Ensure onSearch prop is invoked with the query
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(query);
+    onSearch(String(query));
   };
 
   return (
