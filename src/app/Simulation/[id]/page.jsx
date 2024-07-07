@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import DataTable from "../../(components)/DataTable/DataTable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faObjectGroup, faPeopleGroup, faGenderless, faMoneyCheck, faBalanceScale } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faObjectGroup, faPeopleGroup, faGenderless, faMoneyCheck, faBalanceScale, faAd, fa1, fa2,fa3,fa4,fa5,fa6, fa7, fa8, fa9, fa0 } from "@fortawesome/free-solid-svg-icons";
 
 function Simulation() {
   // State to hold the fetched data and search query
@@ -11,16 +11,62 @@ function Simulation() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const buttonGroup = [
-    {icon: faObjectGroup, value: 'SELECT * from patient'},
-    {icon: faPeopleGroup, value: 'SELECT * from insurance'},
-    {icon: faGenderless, value: 'SELECT AVG(YEAR(CURDATE())-YEAR(DateofBirth)) as value, Gender as label FROM patient GROUP BY Gender'},
-    {icon: faMoneyCheck, value: 'SELECT * from patient'},
-    {icon: faBalanceScale,value: 'SELECT * from patient'},
-    {icon: faObjectGroup, value: 'SELECT * from patient'},
-    {icon: faPeopleGroup, value: 'SELECT * from insurance'},
-    {icon: faGenderless, value: 'SELECT AVG(YEAR(CURDATE())-YEAR(DateofBirth)) as value, Gender as label FROM patient GROUP BY Gender'},
-    {icon: faMoneyCheck, value: 'SELECT * from patient'},
-    {icon: faBalanceScale,value: 'SELECT * from patient'},
+    {icon: fa1, value: `SELECT PatientID, PatientName,        
+                                  MaritalStatus
+                                  FROM Patient 
+                                  WHERE MaritalStatus IN ('Single', 'Married', 'Divorced''Widowed', 'Legally Separated');
+                                  `},
+    {icon: fa2, value: `SELECT PatientID, PatientName
+                                  FROM patient
+                                  WHERE EmploymentStatus = 'Part-time' AND StudentStatus = 'Full-time';
+                                  `},
+    {icon: fa3, value: ` SELECT PatientID, PatientName, Gender,   
+                                  StudentStatus
+                                  FROM Patient
+                                  WHERE Gender = 'Male' AND StudentStatus =  'Full-time';`
+                                },
+    {icon: fa4, value: ` SELECT PatientID, PrimaryCarePhysician, 
+                                  PatientName
+                                  FROM Patient
+                                  GROUP BY PrimaryCarePhysician, PatientID, PatientName
+                                  ORDER BY PrimaryCarePhysician, PatientName;
+                                  `},
+    {icon: fa5,value: `SELECT PatientID, StudentStatus, PatientName
+                                  FROM Patient
+                                  GROUP BY StudentStatus, PatientID, PatientName
+                                  ORDER BY StudentStatus, PatientName;
+                                  `},
+    {icon: fa6, value: `SELECT PatientID, PatientName, Gender,  
+                                  EmploymentStatus
+                                  FROM Patient
+                                  GROUP BY PatientID, PatientName, Gender, EmploymentStatus
+                                  ORDER BY PatientName, Gender, EmploymentStatus;
+                                  `},
+    {icon: fa7, value: ` SELECT PatientID, PatientName, ResidenceType, 
+                                  PreferredContact
+                                  FROM patient
+                                  WHERE PreferredContact = 'Cell'
+                                  GROUP BY PatientID, PatientName, ResidenceType, PreferredContact
+                                  ORDER BY ResidenceType, PatientName;
+                                `},
+    {icon: fa8, value:` SELECT p.*, InsuranceName
+                                  FROM patient p
+                                  JOIN patientinsurance pi on p.PatientID = pi.PatientID
+                                  JOIN insurance i  on pi.InsuranceID = i.InsuranceID
+                                  WHERE PatientName = PolicyHolderName;`
+                                },
+    {icon: fa9, value: ` SELECT pd.PatientID, pd.PatientName, 
+                                  id.InsuranceCompanyName, id.PolicyHolderName, id.DateOfBirth
+                                  FROM patient pd
+                                  JOIN PatientInsurance pid ON pd.PatientID = pid.PatientID
+                                  JOIN Insurance id ON pid.InsuranceID = id.InsuranceID
+                                  WHERE id.DateOfBirth < '2003-01-01';`},
+    {icon: fa0 ,value: `SELECT pd.PatientID, pd.PatientName, COUNT
+                                  (pid.InsuranceID) AS NumberOfInsurances
+                                  FROM Patient pd
+                                  JOIN PatientInsurance pid ON pd.PatientID = pid.PatientID
+                                  GROUP BY pd.PatientID, pd.PatientName
+                                  HAVING COUNT(pid.InsuranceID) > 1;`},
   ]
 
   const handleChange = (event) => {

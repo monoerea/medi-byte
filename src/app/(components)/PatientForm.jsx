@@ -88,7 +88,7 @@ const PatientForm = () => {
                 await createObject(formData,'Insurance');
                 await createObject(formData, 'PatientInsurance');
                 router.refresh();
-                router.push("/");
+                router.push("/Dashboard/1");
             } catch (error) {
                 console.error("Error creating patient:", error);
                 setError("Failed to create patient. Please try again.");

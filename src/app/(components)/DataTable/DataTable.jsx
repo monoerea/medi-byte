@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { deleteItem , updateItems } from "../utils";
+import { deleteItem, updateItems } from "../utils";
 
 const DataTable = ({ items, table }) => {
   const [prevItems, setPrevItems] = useState([]);
@@ -7,28 +7,28 @@ const DataTable = ({ items, table }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [editableRows, setEditableRows] = useState({});
   const [ascendingOrder, setAscendingOrder] = useState(true); // State for sorting order
-  const [sortedColumn, setSortedColumn] = useState([]);
+  const [sortedColumn, setSortedColumn] = useState("");
 
   const keys = Object.keys(allItems[0]);
 
   useEffect(() => {
     // Check if item is an array before setting the items state
     if (Array.isArray(items)) {
-        setPrevItems(items);
-        setAllItems(items);
+      setPrevItems(items);
+      setAllItems(items);
     }
   }, [items]);
 
   useEffect(() => {
-      // Update allItems only when items change
-      if (items !== prevItems) {
-          setAllItems(items);
-          setPrevItems(items);
-          console.log("Updated allItems:", items);
-          console.log("Table:", table);
-      }
+    // Update allItems only when items change
+    if (items !== prevItems) {
+      setAllItems(items);
+      setPrevItems(items);
+      console.log("Updated allItems:", items);
+      console.log("Updated prev:", prevItems);
+      console.log("Table:", table);
+    }
   }, [items, prevItems, table]);
-
 
   const handleToggleAll = (event) => {
     const isChecked = event.target.checked;
@@ -80,7 +80,6 @@ const DataTable = ({ items, table }) => {
       });
 
       // Update the state with the modified data
-      // console.log(updatedItems, updatedItems === allItems);
       setAllItems(updatedItems);
 
       // Save the modified columns
@@ -89,13 +88,13 @@ const DataTable = ({ items, table }) => {
       console.log('Editable rows after save:', editableRows);
       console.log('All items after save', allItems);
     } catch (error) {
-      console.error('Error saving patient:', error);
+      console.error('Error saving item:', error);
     }
   };
 
   const handleDelete = async (id) => {
     try {
-      // Filter out the deleted patient from allItems and filteredPatients
+      // Filter out the deleted item from allItems
       const updatedAllItems = allItems.filter(item => Object.values(item)[0] !== id);
 
       // Update state
@@ -103,10 +102,10 @@ const DataTable = ({ items, table }) => {
 
       console.log('All items after delete', allItems);
 
-      // Delete the patient from the server
+      // Delete the item from the server
       await deleteItem(id, table);
     } catch (error) {
-      console.error('Error deleting patient:', error);
+      console.error('Error deleting item:', error);
     }
   };
 
@@ -132,8 +131,11 @@ const DataTable = ({ items, table }) => {
 
     setAllItems(sortedData);
     console.log('All items after arrange', allItems);
-  };  
-  
+  };
+
+  const generateRanNUM = () => {
+    return Math.floor(Math.random() * 10000);
+  };
 
   return (
     <div className="max-w-full mx-auto max-h-80 overflow-x-scroll">
@@ -145,29 +147,31 @@ const DataTable = ({ items, table }) => {
             </th>
             {keys.map((key) => (
               <th key={key} className="px-1 py-1 sm:px-2 sm:py-1 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
-              <div className="flex items-center">
-                <span>{key}</span>
-                {sortedColumn === key ? (
-                  <button className="ml-2" onClick={() => handleOrderChange(key)}>
-                    {ascendingOrder ? "↑" : "↓"}
-                  </button>
-                    ) : <button className="ml-2" onClick={() => handleOrderChange(key)}>
-                    { "↑" }
-                  </button>}
-              </div>
-            </th>            
+                <div className="flex items-center">
+                  <span>{key}</span>
+                  {sortedColumn === key ? (
+                    <button className="ml-2" onClick={() => handleOrderChange(key)}>
+                      {ascendingOrder ? "↑" : "↓"}
+                    </button>
+                  ) : (
+                    <button className="ml-2" onClick={() => handleOrderChange(key)}>
+                      {"↑"}
+                    </button>
+                  )}
+                </div>
+              </th>
             ))}
             <th className="px-1 py-1 sm:px-2 sm:py-1 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {allItems.map((item) => (
-            <tr key={Object.values(item)[0]}>
+          {allItems.map((item, rowIndex) => (
+            <tr key={rowIndex}>
               <td className="px-1 py-1 sm:px-2 sm:py-1 whitespace-nowrap">
                 <input type="checkbox" onChange={(event) => handleRowSelect(event, Object.values(item)[0])} checked={selectedRows.includes(Object.values(item)[0])} />
               </td>
-              {keys.map((key) => (
-                <td key={key} className="px-1 py-1 sm:px-2 sm:py-1 whitespace-nowrap text-xxs sm:text-xs text-gray-700">
+              {keys.map((key, cellIndex) => (
+                <td key={`${rowIndex}-${cellIndex}`} className="px-1 py-1 sm:px-2 sm:py-1 whitespace-nowrap text-xxs sm:text-xs text-gray-700">
                   {editableRows[Object.values(item)[0]] ? (
                     <input type="text" value={editableRows[Object.values(item)[0]][key]} onChange={(e) => {
                       const value = e.target.value;
@@ -195,7 +199,7 @@ const DataTable = ({ items, table }) => {
                     </button>
                   </>
                 ) : (
-                  <button onClick={() => handleEdit(Object.values(item)[0])} className='text-blue-500 hover:text-blue-900' >Edit</button>
+                  <button onClick={() => handleEdit(Object.values(item)[0])} className='text-blue-500 hover:text-blue-900'>Edit</button>
                 )}
                 <button onClick={() => handleDelete(Object.values(item)[0])} className="text-red-600 hover:text-red-900">
                   Delete
