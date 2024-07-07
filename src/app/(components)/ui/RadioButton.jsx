@@ -21,7 +21,7 @@ const RadioButton = ({ options = [], value: initialValue, onSelect }) => {
                         value={option.value}
                         checked={selectedOption === option.value}
                         onChange={handleOptionChange}
-                        className="sr-only" // Hide the default radio button
+                        className="sr-only"
                     />
                     <label
                         htmlFor={option.value}

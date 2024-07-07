@@ -9,10 +9,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange, showEntries, totalE
     const nextPage = currentPage + 1;
     onPageChange(nextPage);
 
-    // Calculate the number of remaining entries to display on the next page
     const remainingEntries = totalEntries - currentPage * showEntries;
 
-    // If there are more remaining entries than showEntries, update the pagination
     if (remainingEntries > 0) {
       onPageChange(nextPage);
     }

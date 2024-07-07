@@ -10,7 +10,6 @@ const SideMenu = ({ items, toggleCollapsed, onLinkClick }) => {
 
   const handleLinkClick = (item) => {
     console.log(item);
-    // Call the parent component's onLinkClick function with the clicked item
     onLinkClick(item);
   };
 

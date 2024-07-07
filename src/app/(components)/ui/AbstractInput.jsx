@@ -5,13 +5,12 @@ const AbstractInput = ({ type, id, value, placeholder, validate, onChange }) => 
 
   const handleChange = (event) => {
     const val = event.target.value;
-    // Validate the input value if the validate function is provided
     if (validate && !validate(val)) {
       setError('Invalid input');
     } else {
       setError('');
     }
-    onChange(id, val); // Pass id and value to the onChange handler
+    onChange(id, val); 
     
   };
 
@@ -21,7 +20,7 @@ const AbstractInput = ({ type, id, value, placeholder, validate, onChange }) => 
         type={type}
         id={id}
         required
-        value={value} // Ensure that the value prop is passed to the input
+        value={value} 
         autoComplete={id}
         onChange={handleChange}
         placeholder={placeholder}

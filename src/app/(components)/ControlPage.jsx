@@ -15,7 +15,6 @@ const ControlPage = ({item, table}) => {
 
     
     useEffect(() => {
-        // Check if item is an array before setting the items state
         if (Array.isArray(item)) {
             const newItems = [...item];
             setItems(newItems);
@@ -49,8 +48,8 @@ const ControlPage = ({item, table}) => {
     };
 
     const handleSearch = (query) => {
-        setSearchQuery(query.toLowerCase()); // Update search query state
-        setCurrentPage(1); // Reset to the first page
+        setSearchQuery(query.toLowerCase());
+        setCurrentPage(1);
     };
 
     const handleShowEntriesChange = (value) => {
@@ -61,7 +60,7 @@ const ControlPage = ({item, table}) => {
         <div className="bg-gray-100 p-4 rounded-lg max-w-screen-l mx-auto min-h-[calc(100vh-300px)]">
             <div className="flex justify-between items-center mb-4">
                 <SearchBar onSearch={handleSearch} />
-                <div className="text-gray-500"> {/* Apply text-gray-500 for gray color */}
+                <div className="text-gray-500">
                 Show{" "}
                     <select
                         value={showEntries}

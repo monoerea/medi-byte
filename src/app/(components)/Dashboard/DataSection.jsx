@@ -4,16 +4,15 @@ import { type } from 'os';
 
 function DataSection() {
     const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true); // Track overall loading state
+    const [isLoading, setIsLoading] = useState(true); 
 
     useEffect(() => {
         fetchData();
     }, []);
 
     const fetchData = async () => {
-        setIsLoading(true); // Start loading
+        setIsLoading(true);
         try {
-            // Fetch data from first endpoint
             const response1 = await fetch('/api/DataAnalysis', {
                 method: 'POST',
                 headers: {
@@ -40,7 +39,7 @@ function DataSection() {
             console.error('Error fetching data from /api/DataAnalysis:', error);
         }
         finally {
-            setIsLoading(false); // Finish loading regardless of success or failure
+            setIsLoading(false); 
         }
     };
 

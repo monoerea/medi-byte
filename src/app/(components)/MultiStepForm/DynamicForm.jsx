@@ -6,31 +6,23 @@ import Select from '../ui/Select';
 const DynamicForm = ({ fields, formData, handleFormDataChange, index }) => {
     console.log('Index:', index);
     
-    // Get unique group numbers
     const groupNumbers = [...new Set(fields.fields.map(field => field.group))];
 
-    // Function to calculate the maximum number of fields in each group
     const maxNumberOfFieldsInEachGroup = (groupNumber) => {
-        // Filter fields based on the group number
+
         const fieldsInGroup = fields.fields.filter(field => field.group === groupNumber);
-        // Return the length of the filtered array, which represents the number of fields in the group
+        
         return fieldsInGroup.length;
     };
     
-
-    // Function to render fields by group number
     const renderFieldsByGroup = (groupNumber) => {
-        // Filter fields based on the group number
+
         const fieldsInGroup = fields.fields.filter(field => field.group === groupNumber);
         const numberOfFieldsInGroup = fieldsInGroup.length;
-        
-        // Set a maximum number of columns
-        const maxColumns = 3; // Adjust this value based on your layout requirements
-        
-        // Determine the number of columns based on the number of fields in the group
+
+        const maxColumns = 3;
         const columns = Math.min(numberOfFieldsInGroup, maxColumns);
     
-        // Render each field in the group
         return fieldsInGroup.map((field, idx) => (
             
             <div className={`mb-4 md:w-${columns} md:gap-4`} key={idx}>
@@ -52,7 +44,7 @@ const DynamicForm = ({ fields, formData, handleFormDataChange, index }) => {
                     }                                
                     placeholder={field.placeholder}
                     validate={field.validate}
-                    onChange={handleFormDataChange} // Pass index here
+                    onChange={handleFormDataChange} 
                     />
                 }
                 {field.type === 'select' &&
@@ -71,7 +63,6 @@ const DynamicForm = ({ fields, formData, handleFormDataChange, index }) => {
     return (
         <div className='grid grid-cols-1'>
             <h2 className="text-xl text-center font-semibold text-black">{fields.name}</h2>
-            {/* Render fields for each group */}
             {groupNumbers.map((groupNumber, idx) => (
                 <div key={idx}>
                     <div className={`grid md:grid-cols-${maxNumberOfFieldsInEachGroup(groupNumber)} md:gap-4 mb-4 xs:grid-cols-1`}>

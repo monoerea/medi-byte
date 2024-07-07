@@ -6,13 +6,12 @@ const DataTable = ({ items, table }) => {
   const [allItems, setAllItems] = useState(items);
   const [selectedRows, setSelectedRows] = useState([]);
   const [editableRows, setEditableRows] = useState({});
-  const [ascendingOrder, setAscendingOrder] = useState(true); // State for sorting order
+  const [ascendingOrder, setAscendingOrder] = useState(true);
   const [sortedColumn, setSortedColumn] = useState("");
 
   const keys = Object.keys(allItems[0]);
 
   useEffect(() => {
-    // Check if item is an array before setting the items state
     if (Array.isArray(items)) {
       setPrevItems(items);
       setAllItems(items);
@@ -20,7 +19,6 @@ const DataTable = ({ items, table }) => {
   }, [items]);
 
   useEffect(() => {
-    // Update allItems only when items change
     if (items !== prevItems) {
       setAllItems(items);
       setPrevItems(items);
@@ -58,7 +56,6 @@ const DataTable = ({ items, table }) => {
       const editedRow = editableRows[id];
       const originalRow = allItems.find(item => Object.values(item)[0] === id);
 
-      // Determine modified columns
       const modifiedColumns = {};
       Object.keys(editedRow).forEach(key => {
         if (editedRow[key] !== originalRow[key]) {
@@ -66,11 +63,8 @@ const DataTable = ({ items, table }) => {
         }
       });
 
-      // Remove the edited row from editableRows
       const { [id]: _, ...remainingEditableRows } = editableRows;
       setEditableRows(remainingEditableRows);
-
-      // Update the edited row in the allItems array
       const updatedItems = allItems.map(item => {
         if (Object.values(item)[0] === id) {
           return { ...item, ...modifiedColumns };
@@ -79,10 +73,8 @@ const DataTable = ({ items, table }) => {
         }
       });
 
-      // Update the state with the modified data
       setAllItems(updatedItems);
 
-      // Save the modified columns
       await updateItems(id, modifiedColumns, table);
 
       console.log('Editable rows after save:', editableRows);
@@ -94,15 +86,12 @@ const DataTable = ({ items, table }) => {
 
   const handleDelete = async (id) => {
     try {
-      // Filter out the deleted item from allItems
       const updatedAllItems = allItems.filter(item => Object.values(item)[0] !== id);
 
-      // Update state
       setAllItems(updatedAllItems);
 
       console.log('All items after delete', allItems);
 
-      // Delete the item from the server
       await deleteItem(id, table);
     } catch (error) {
       console.error('Error deleting item:', error);
@@ -110,16 +99,13 @@ const DataTable = ({ items, table }) => {
   };
 
   const handleOrderChange = (columnName) => {
-    // Toggle ascending and descending order for the clicked column
     setAscendingOrder(columnName === sortedColumn ? !ascendingOrder : true);
     setSortedColumn(columnName);
 
-    // Implement sorting logic here
     const sortedData = [...allItems].sort((a, b) => {
       const valueA = a[columnName];
       const valueB = b[columnName];
 
-      // Adjust comparison based on ascending or descending order
       if (valueA < valueB) {
         return ascendingOrder ? -1 : 1;
       }

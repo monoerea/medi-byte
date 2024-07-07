@@ -1,4 +1,4 @@
-import {getAgeDistributionbyGender, getSelfInsured, getCompanyFreq, getAgeDistributionCount, getGenderDistribution} from './sql';
+import {getAgeDistributionbyGender, getSelfInsured, getCompanyFreq, getAgeDistributionCount, getGenderDistribution, getMarital, getCountInsurance} from './sql';
 import {prepareGroupedBarChartData, transform} from '../../lib/utils.js';
 
 export const handler = async(data) =>{
@@ -16,31 +16,30 @@ export const handler = async(data) =>{
 const computeAverage = async(data) =>{
     console.log('computeAverage', data);
     switch(data.req){
-        case 'age':
+        case 'age':{
             const result = transform(await getAgeDistributionbyGender(), data.chartType);
             console.log(result);
-            return result;
+            return result;}
     }
 }
 
 const computeDistribution = async(data) =>{
     console.log('computeDistribution', data);
     switch(data.req){
-        case 'insured':
+        case 'insured':{
             const result = transform(await getSelfInsured(), data.chartType);
             console.log(result);
-            return result;
-        case 'age':
-            const res = transform(await getAgeDistributionCount(), data.chartType);
-            console.log(res);
-            return res;
-        case 'gender':
-            const results = transform(await getGenderDistribution(), data.chartType);
-            console.log(results);
-            return results;
+            return result;}
+        case 'age':{
+            const result = transform(await getAgeDistributionCount(), data.chartType);
+            console.log(result);
+            return result;}
+        case 'gender':{
+            const result = transform(await getGenderDistribution(), data.chartType);
+            console.log(result);
+            return result;}
     }
 }
-
 const computeFreq = async(data) =>{
     console.log('computeFreq', data);
     switch(data.req){

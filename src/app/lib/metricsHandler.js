@@ -1,7 +1,6 @@
 import { computeDistAge, computeDistGender, computeDistMarital } from './computeDistribution.js';
 import { computeAverageAge } from './computeAverage.js';
 
-// Define a function to get the total length of data
 export const getTotalLength = async (data) => {
     if (data.req === 'age'){
         const length = data.patients.length;
@@ -10,7 +9,6 @@ export const getTotalLength = async (data) => {
     
 };
 
-// Define a function to handle average age computation
 export const handleAverage = async (data) => {
     if (data.req === 'age') {
         const averageAge = await computeAverageAge(data.patients);
@@ -18,7 +16,6 @@ export const handleAverage = async (data) => {
     }
 };
 
-// Define a function to handle distribution computation
 export const handleDistribution = async (data) => {
     if (data.req === 'age') {
         const ageDistribution = await computeDistAge(data);
@@ -41,7 +38,6 @@ export const handleFrequency = async (data) => {
     }
 }
 
-// Define a function to handle data based on its type
 export const handler = async (data) => {
     console.log('Passed Data:', Object.keys(data), data.type, data.req, data.patients.length);
     switch (data.type) {

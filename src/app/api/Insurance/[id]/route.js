@@ -18,7 +18,6 @@ export async function GET(req) {
 
 export async function PUT(req) {
   try {
-    // Parse the request body
     const formData = await req.json();
     console.log('formData', formData);
 
@@ -26,16 +25,12 @@ export async function PUT(req) {
     const relevantValues = Object.values(body);
     const keys = Object.keys(body);
     console.log('relevantValues:', relevantValues, 'keys:', keys);
-    // Assuming formData contains the updated data
 
-    // Update the patient with the provided id
     const updatedPatient = await updateItem(id, body, table);
 
-    // Return the updated patient
     return NextResponse.json(updatedPatient, { status: 201 });
   } catch (error) {
     console.error(error);
-    // Return an error response if something goes wrong
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

@@ -17,12 +17,9 @@ const PatientForm = () => {
     const router = useRouter();
 
     const { formData, handleFormDataChange, setFormData } = useFormData();
-    const [previousStep, setPreviousStep] = useState(0)
     const [currentStep, setCurrentStep] = useState(0)
     const [error, setError] = useState('');
     const [add, setAdd] = useState([]);
-
-    const delta = currentStep - previousStep
     
     const onNext = (e) => {
         if (e) {
@@ -38,7 +35,7 @@ const PatientForm = () => {
     
     const handleAdd = () => {
         formData.InsuranceID.push(Math.floor(Math.random() * 10000));
-        setAdd([...add, {}]); // Add an empty object (representing a new form) to the add array
+        setAdd([...add, {}]); 
     };  
     
     const renderMultiForm = () => {
@@ -47,21 +44,20 @@ const PatientForm = () => {
             return (
                 <div key={index}>
                     <DynamicForm
-                        index={index} // Increment the index by 1
-                        fields={steps[1]} // Assuming you want to use the same fields for the additional forms
+                        index={index}
+                        fields={steps[1]} 
                         formData={formData} // Pass the entire formData object
                         handleFormDataChange={(id, value) => {
-                            // Check if the field belongs to insurance data based on the id
+
                             const isInsuranceField = Object.keys(formData).indexOf(id) > Object.keys(formData).indexOf('InsuranceID');
-                            console.log(`isInsuranceField for index ${index}:`, isInsuranceField, Object.keys(formData).indexOf(id), Object.keys(formData).indexOf('InsuranceID')); // Log the isInsuranceField value                        
-        
-                            // Call handleFormDataChange with the provided index
+                            console.log(`isInsuranceField for index ${index}:`, isInsuranceField, Object.keys(formData).indexOf(id), Object.keys(formData).indexOf('InsuranceID')); 
+
                             handleFormDataChange(id, value, index);
                         }}
                     />
                     {index < add.length - 1 && (
                         <hr className="my-12 h-px border-t-0 bg-gradient-to-r from-transparent via-blue-700 to-transparent" style={{ backgroundImage: 'linear-gradient(to right, transparent, blue, transparent)', opacity: 0.7 }} />
-                    )} {/* Add a divider except after the last form */}
+                    )}
                 </div>
             );
         });
@@ -72,8 +68,6 @@ const PatientForm = () => {
     
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
-        // Perform validation
         const valid = isValid(formData);
     
         if (!valid) {

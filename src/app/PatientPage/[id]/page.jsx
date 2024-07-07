@@ -3,14 +3,9 @@ import React from 'react';
 import PatientForm from '../../(components)/PatientForm';
 import { FormDataProvider } from '../../(components)/ui/FormDataContext';
 
-const PatientPage = ({ params }) => {
-  // const router = useRouter();
-
+const PatientPage = () => {
   return (
     <div>
-      {/* <div>
-        PatientPage {params.id}
-      </div> */}
       <FormDataProvider>
         <PatientForm/>
       </FormDataProvider>

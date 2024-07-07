@@ -18,14 +18,14 @@ export const initData = {
   MailingAddress:"5209 Kawit, Gloria, Oriental Mindoro",
   MaritalStatus:'Single',
   Gender: "Female",
-  CellPhone: "911234567",
+  CellPhone: "0912344543",
   HomeAddress:"5209 Kawit, Gloria, Oriental Mindoro",
   ResidenceType:"Private Home",
   PrimaryCarePhysician:"Dr. Kim Taehyung",
   DateOfBirth: '2001-03-21',
-  SSN:'123123423',
-  HomePhone:'1234123',
-  WorkPhone:"1234123",
+  SSN:'8756334',
+  HomePhone:'67545564',
+  WorkPhone:"987564675",
   PreferredContact:"Home",
   StudentStatus:'Full-time',
   EmployerName:'Kim Taehyung',
@@ -34,8 +34,8 @@ export const initData = {
   EmploymentStatus:'Retired',
   EmergencyName: "Jocelyn S. Senorin",
   RelationshipToPatient: "Mother",
-  EmergencyCellphone:'12345678900',
-  EmergencyWorkphone:'9876543211',
+  EmergencyCellphone:'985667676',
+  EmergencyWorkphone:'984567546',
   EmergencyDateOfBirth: new Date('03-24-1973'),
 
   InsuranceID: [],
@@ -55,7 +55,7 @@ export const initData = {
 };
 
 
-export const prefixOptions = [ // Corrected variable name to prefixOptions
+export const prefixOptions = [
         { label: 'Mr.', value: 'Mr.' },
         { label: 'Mrs.', value: 'Mrs.' }, 
         { label: 'Ms.', value: 'Ms.' },

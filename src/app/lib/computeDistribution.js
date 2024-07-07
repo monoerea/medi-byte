@@ -1,4 +1,4 @@
-// Compute the distribution of ages
+
 export const computeDistAge = async (data) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -19,7 +19,6 @@ export const computeDistAge = async (data) => {
 };
 
 
-// Compute the distribution of genders
 export const computeDistGender = async (data) => {
     const genderCounts = {
         'Male': 0,
@@ -37,7 +36,7 @@ export const computeDistGender = async (data) => {
     });
     return genderCounts;
 }
-// Compute the distribution of marital statuses
+
 export const computeDistMarital = async (data) => {
     const maritalCounts = {
       'Single': 0,

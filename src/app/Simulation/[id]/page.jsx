@@ -84,7 +84,6 @@ function Simulation() {
     getQuery(searchQuery);
   };
 
-  // Function to fetch data based on the search query
   const getQuery = async (searchQuery) => {
     console.log('Query',searchQuery);
     try {
@@ -101,7 +100,7 @@ function Simulation() {
       if (res.ok) {
         const data = await res.json();
         console.log('DATA', data);
-        setItems(data); // Update state with fetched data
+        setItems(data);
       } else {
         console.error("Failed to fetch data");
       }
