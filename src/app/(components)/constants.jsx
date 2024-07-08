@@ -36,7 +36,7 @@ export const initData = {
   RelationshipToPatient: "Mother",
   EmergencyCellphone:'985667676',
   EmergencyWorkphone:'984567546',
-  EmergencyDateOfBirth: '1973-03-24',
+  EmergencyDateOfBirth: '2001-03-21',
 
   InsuranceID: [],
   InsuranceCompanyName: ['HYBE Insurances'],

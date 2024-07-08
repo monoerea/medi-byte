@@ -63,11 +63,12 @@ export async function PUT(req) {
           const result = await query({
             query: `SELECT PatientID FROM Patient WHERE PatientID = ?`,
             values: [patientId]
-          })[0];
+          });
           const res = await query({
             query: `SELECT InsuranceID FROM Insurance WHERE InsuranceID = ?`,
             values: [insuranceID]
-          })[0];
+          });
+          console.log(res, result);
           data = body;
         } catch (error) {
           console.error('Error executing combined query:', error);

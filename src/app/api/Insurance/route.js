@@ -10,7 +10,7 @@ export async function POST(req) {
     const TOSLICE = 27
 
     const responses = await Promise.all(formDataArray.map(async (data) => {
-      const items = Object.keys(data).slice(TOSLICE, -1);
+      const items = Object.keys(data).slice(TOSLICE, data.length);
       const keys = items.map((item, index) => {
         if (index > 3 && item.startsWith('Insurance') && !(item.includes('InsuranceName'))) {
           return item.replace('Insurance', '');
@@ -40,9 +40,9 @@ export async function POST(req) {
         objects.push(obj);
     }
       objects.forEach(obj => {
-        const relevantValues = Object.values(obj).slice(TOSLICE, -1);
+        const relevantValues = Object.values(obj).slice(TOSLICE, obj.length);
         console.log('Insurance', relevantValues, keys);
-        return createItem(relevantValues, keys, table, (Object.values(data).length - TOSLICE) - 1);
+        return createItem(relevantValues, keys, table, (Object.values(data).length - TOSLICE));
       });
     }));
 
