@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { createItem, getAllItems } from '../controller';
+import { createItem, getAllItems, deleteItem } from '../controller';
 import { getRandomId } from '../../(components)/utils';
 
-const table = 'patientinsurance';
+const table = 'PatientInsurance';
 
 export async function POST(req) {
   try {

@@ -90,8 +90,8 @@ const DataTable = ({ items, table }) => {
 
       setAllItems(updatedAllItems);
 
-      console.log('All items after delete', allItems);
-
+      console.log('All items after delete', allItems, table);
+      
       await deleteItem(id, table);
     } catch (error) {
       console.error('Error deleting item:', error);
@@ -117,10 +117,6 @@ const DataTable = ({ items, table }) => {
 
     setAllItems(sortedData);
     console.log('All items after arrange', allItems);
-  };
-
-  const generateRanNUM = () => {
-    return Math.floor(Math.random() * 10000);
   };
 
   return (

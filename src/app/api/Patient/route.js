@@ -3,7 +3,7 @@
 import { NextResponse } from 'next/server';
 import { createItem, getAllItems, updateItem, deleteItem } from '../controller';
 
-const table = 'patient'
+const table = 'Patient'
 
 export async function POST(req) {
   try {

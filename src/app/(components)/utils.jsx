@@ -2,13 +2,17 @@ export const validateEmail = (email) => {
     return email.match(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/);
   };
 
+export const ValidateID = (id) =>{
+  return  /^\d{5}$/.test(id)
+}
+
 export const validateName = (name) => {
   return /^[A-Za-z\s]+$/.test(name);
 };
 
 
-export const validateCellPhone = (cellPhone) => {
-  return /^\d{9}$/.test(cellPhone);
+export const validatePhone = (phone) => {
+  return /^\d{9}$/.test(phone);
 };
 
 export const validateMiddleInitial = (middleInitial) => {
@@ -99,17 +103,17 @@ export async function deleteItem(id, table) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ id })
+      body: JSON.stringify({ id, table })
     });
 
     if (!response.ok) {
-      throw new Error('Failed to delete patient');
+      throw new Error('Failed to delete item');
     }
     
     return response.status;
   } catch (error) {
-    console.error('Error deleting patient:', error);
-    throw new Error('Failed to delete patient');
+    console.error('Error deleting item:', error);
+    throw new Error('Failed to delete item');
   }
 }
 
@@ -117,6 +121,7 @@ export async function deleteItem(id, table) {
 export const getRandomId = () => {
   return Math.floor(Math.random() * 10000);;
 };
+
 
 // Fetch raw data from multiple endpoints
 export const fetchRawDataFromServer = async (endpoints) => {

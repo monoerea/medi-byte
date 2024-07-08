@@ -37,8 +37,8 @@ export async function PUT(req) {
 
 export async function DELETE(req) {
   try {
-    const {id} = await req.json();
-    console.log(id);
+    const {id, table} = await req.json();
+    console.log(id, table);
     await deleteItem(id, table);
     return NextResponse.json({ status: 204 });
   } catch (error) {

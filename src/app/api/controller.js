@@ -78,9 +78,16 @@ export async function getItem(itemId, table) {
   // Function to delete an item by ID
   export async function deleteItem(itemId, table) {
     try {
-      // Perform database query to delete item by ID
+      console.log('HEllo',itemId, table);
+      const columnIdName = `${table}ID`;
+      console.log(columnIdName);
       await query({
-        query: `DELETE FROM ${table} WHERE PatientID = ?`,
+        query: `DELETE FROM PatientInsurance WHERE ${columnIdName} = ?`,
+        values: [itemId]
+      });
+  
+      await query({
+        query: `DELETE FROM ${table} WHERE ${columnIdName} = ?`,
         values: [itemId]
       });
     } catch (error) {

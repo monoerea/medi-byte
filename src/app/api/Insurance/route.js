@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createItem, getAllItems, updateItem, deleteItem, getItem } from '../controller';
 
-const table = 'insurance';
+const table = 'Insurance';
 export async function POST(req) {
   try {
     const formData = await req.json();
@@ -75,7 +75,9 @@ export async function PUT(req) {
 
 export async function DELETE(req) {
   try {
-    await deletePatient(req.query.id);
+    const body = await req.json()
+    console.log('DELETE',body);
+    await deletePatient(req.query.id,);
     return NextResponse.json({}, { status: 204 });
   } catch (error) {
     console.error(error);
